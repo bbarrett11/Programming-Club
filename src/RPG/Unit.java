@@ -3,6 +3,7 @@ package RPG;
 import javax.swing.*;
 
 public class Unit {
+	final String CHARACTER_ART_PATH = "Art\\"; //put before character name to get through the folders
 	
 	public ImageIcon graphic;
 	public ImageIcon portrait;
@@ -33,9 +34,9 @@ public class Unit {
 	//level, exp, skills, buffs
 	
 	public Unit(String unitName, int allignmentInput){
-		graphic = new ImageIcon(unitName + ".png");
-		inactiveGraphic = new ImageIcon(unitName + "Inactive.png");
-		portrait = new ImageIcon(unitName + "Portrait.png");
+		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
+		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + unitName + "Inactive.png");
+		portrait = new ImageIcon(CHARACTER_ART_PATH + unitName + "Portrait.png");
 		placed = false;
 		name = unitName;
 		moveRange = 6;
@@ -45,10 +46,10 @@ public class Unit {
 	}
 	
 	public Unit(String unitName, int allignmentInput, String weaponName){
-		graphic = new ImageIcon(unitName + ".png");
-		inactiveGraphic = new ImageIcon(unitName + "Inactive.png");
-		attackAnimation = new ImageIcon(unitName + "Attack.gif");
-		portrait = new ImageIcon(unitName + "Portrait.png");
+		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
+		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + unitName + "Inactive.png");
+		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + unitName + "Attack.gif");
+		portrait = new ImageIcon(CHARACTER_ART_PATH + unitName + "Portrait.png");
 		placed = false;
 		name = unitName;
 		moveRange = 6;
@@ -74,10 +75,10 @@ public class Unit {
 	
 	public Unit(String unitName, int allignmentInput, String weaponName, int maxEnthusiasmInput, int toughnessInput, int maxFocusInput,
 			int dilligenceInput, int strengthInput, int gloryInput, int avoidanceInput, int speedInput){
-		graphic = new ImageIcon(unitName + ".png");
-		inactiveGraphic = new ImageIcon(unitName + "Inactive.png");
-		attackAnimation = new ImageIcon(unitName + "Attack.gif");
-		portrait = new ImageIcon(unitName + "Portrait.png");
+		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
+		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + unitName + "Inactive.png");
+		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + unitName + "Attack.gif");
+		portrait = new ImageIcon(CHARACTER_ART_PATH + unitName + "Portrait.png");
 		placed = false;
 		name = unitName;
 		moveRange = 6;
