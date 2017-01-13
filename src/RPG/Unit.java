@@ -157,7 +157,7 @@ public class Unit {
 	}
 	
 	public ImageIcon createAttackAnimation(){
-		return new ImageIcon(name + "Attack.gif");
+		return new ImageIcon(CHARACTER_ART_PATH + name + "Attack.gif");
 	}
 	
 	
