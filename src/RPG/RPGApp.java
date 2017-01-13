@@ -143,7 +143,7 @@ public class RPGApp extends JFrame {
 		characterDetailAll.setLayout(new BorderLayout());
 		
 		characterPortrait = new JPanel();
-		JLabel portraitImage = new JLabel(new ImageIcon(space.occupyingUnit.name + "Portrait.png"));
+		JLabel portraitImage = new JLabel(space.occupyingUnit.portrait);
 		characterPortrait.add(portraitImage);
 		characterPortrait.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 		
