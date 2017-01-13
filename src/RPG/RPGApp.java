@@ -532,13 +532,6 @@ public class RPGApp extends JFrame {
 			}
 		}
 		
-		public void myAttacksWillRainDownFromTheSky(){
-			for(int n = 0;n<array.length;n++){
-				for(int j = 0;j<array[n].length;j++){
-					array[n][j].colorTile.setAttacking();
-				}
-			}
-		}
 		
 		@Override
 		public void mouseEntered(MouseEvent e) {
