@@ -608,7 +608,9 @@ public class RPGApp extends JFrame {
 				actionList.add("Talk");
 			}
 			
-			checkAttack(moveToTile, movingUnit.allignment, movingUnit.attackRange);
+			for(int range:movingUnit.attackRange){
+				checkAttack(moveToTile, movingUnit.allignment, range);
+			}
 			
 			if(attackFound){
 				actionList.add("Attack");
@@ -769,7 +771,9 @@ public class RPGApp extends JFrame {
 			JLabel defendingAccuracy = new JLabel("Accuracy: " + defAccuracy);
 			
 			attackFound = false;
-			checkAttack(defendingUnit.occupiedSpace, defendingUnit.allignment, defendingUnit.attackRange);
+			for(int range:defendingUnit.attackRange){
+				checkAttack(defendingUnit.occupiedSpace, defendingUnit.allignment, range);
+			}
 			if(!attackFound){
 				defendingDamage.setText("Damage: --");
 				defendingAccuracy.setText("Accuracy: --");
@@ -976,7 +980,9 @@ public class RPGApp extends JFrame {
 			
 		}
 		if(action.equals("Attack")){
-			setAttack(moveToTile, movingUnit.allignment, movingUnit.attackRange);
+			for(int range:movingUnit.attackRange){
+				setAttack(moveToTile, movingUnit.allignment, range);
+			}
 			attackFromTile = moveFromTile;
 			moveFromTile = moveToTile;
 			actionWindow.dispose();
@@ -1224,7 +1230,9 @@ public class RPGApp extends JFrame {
 				attack(attackUnit, defendUnit);
 				
 				attackFound = false;
-				setAttack(defendUnit.occupiedSpace, defendUnit.allignment, defendUnit.attackRange);
+				for(int range:defendUnit.attackRange){
+					setAttack(defendUnit.occupiedSpace, defendUnit.allignment, range);	
+				}
 				if(attackFound){
 					counterAttack = true;
 					attack(defendUnit, attackUnit);

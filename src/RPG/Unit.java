@@ -13,7 +13,7 @@ public class Unit {
 	public Tile occupiedSpace;
 	public String name;
 	public int moveRange;
-	public int attackRange;
+	public int[] attackRange;
 	public int allignment;
 	public boolean active = false;
 	public Equipment weapon;
@@ -40,7 +40,7 @@ public class Unit {
 		placed = false;
 		name = unitName;
 		moveRange = 6;
-		attackRange = 1;
+		attackRange = new int[]{1};
 		weapon = new Equipment("Fists");
 		allignment = allignmentInput;
 	}
@@ -146,6 +146,11 @@ public class Unit {
 	public void die(){
 		//save to file if no perma-death
 		occupiedSpace.remove(this);
+	}
+	
+	public void equip(Equipment newWeapon){
+		weapon = newWeapon;
+		attackRange = newWeapon.getRange();
 	}
 	
 	public void apply(Buff theBigCheese){
