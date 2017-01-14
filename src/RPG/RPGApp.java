@@ -107,7 +107,16 @@ public class RPGApp extends JFrame {
 	private void buildGrid(){
 		System.out.println(array.length);
 
-		grid = new JPanel();
+		grid = new JPanel(){
+			
+			public void paintComponent(Graphics g)
+			{
+				super.paintComponent(g);
+				g.drawImage(new ImageIcon("Art\\background_tiles\\misc\\780x700 tile background.png").getImage(), 5,5, null);
+			
+			}
+			
+		};
 		
 		grid.setLayout(new GridLayout(array.length,array.length));
 
@@ -124,7 +133,7 @@ public class RPGApp extends JFrame {
 				grid.add(array[n][j]);
 			}
 		}
-		
+		repaint();
 	}
 		
 	JPanel characterDetailPanel;
@@ -240,6 +249,8 @@ public class RPGApp extends JFrame {
 	public boolean actionMenuOpen = false;
 	
 	public void refresh(){
+		grid.repaint();
+
 		for(int n = 0;n<array.length;n++){
 			for(int j = 0;j<array[n].length;j++){
 				array[n][j].updateUI();
@@ -531,6 +542,7 @@ public class RPGApp extends JFrame {
 				}
 			}
 		}
+		
 		
 		
 		@Override
