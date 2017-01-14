@@ -46,6 +46,8 @@ public class Tile extends JPanel{
 	}
 	
 	public Tile(int x, int y, int terrainType){
+		setOpaque(false);
+		
 		xPos = x;
 		yPos = y;
 		
