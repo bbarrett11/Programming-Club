@@ -10,7 +10,7 @@ public class Equipment {
 		name = nameInput;
 		
 		if(name.substring(0,5).equals("sword")){
-			range = new int[]{-3};
+			range = new int[]{1};
 			attack = 4;
 			accuracy = 110;
 			name = nameInput.substring(5);
