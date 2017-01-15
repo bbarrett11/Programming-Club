@@ -35,6 +35,7 @@ public class RPGApp extends JFrame {
 			}
 		}
 	}
+
 	
 	public RPGApp(){
 		
@@ -42,21 +43,29 @@ public class RPGApp extends JFrame {
 		
 		setTitle("Grid");
 		setSize(1000,750);
+		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addKeyListener(new SpawnListener());
 				
 		buildGrid();		
-				
-		add(grid, BorderLayout.CENTER);
+		add(grid);
+		characterDetailPanel = new JPanel();
+		characterDetailPanel.setLayout(new BorderLayout());
+
 		setVisible(true);
+	
 		refreshGrid();
+		add(characterDetailPanel);
+
+		
+		scrollTimer = new Timer(250, Scroll); //start the Scroll timer, every .25 seconds will check to see if the screen has to move
+		scrollTimer.start();
+
 	}
 	
 	public void refreshGrid(){
-		setVisible(false);
+		//setVisible(false);
 		remove(grid);
-		characterDetailPanel = new JPanel();
-		characterDetailPanel.setLayout(new BorderLayout());
 		layout = new SpringLayout();
 		layout.putConstraint(SpringLayout.WEST, grid, 0, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.EAST, grid, this.getWidth() - grid.getWidth()/16 - 146, SpringLayout.WEST, this);
@@ -70,8 +79,8 @@ public class RPGApp extends JFrame {
 		
 		setLayout(layout);
 		add(grid);
-		add(characterDetailPanel);
-		setVisible(true);
+
+		//setVisible(true);
 	}
 	
 	ActionListener scrollRight = new ActionListener(){
@@ -98,16 +107,62 @@ public class RPGApp extends JFrame {
 		}
 	};
 	
+	public Timer scrollTimer;//timer that runs the Scroll method
+	 
+	public int startY =0, startX = 0, //give the top left corner where the visible grid starts to build from array
+			currentSize = 20;//how big the camera/visibleGrid will be 
+	public boolean moveNorth = false,moveSouth = false,moveEast = false,moveWest = false; //tells if the mouse is in a square that should make the camera move 
+	
+	
+	/**
+	 * ActionListener that runs every .25 seconds on the scrollTimer (initialized in constructor)
+	 * It checks to see if the screen should scroll, then refreshes the grid based on the startX and startY variables
+	 */
+	 ActionListener Scroll = new ActionListener()
+			 {
+				 public void actionPerformed(ActionEvent e)
+				 {
+				//System.out.println("scroll" + startX + " "+startY);
+				checkMoveCamera();
+				buildVisibleGrid();
+				
+				add(grid);
+				refreshGrid();
+				refresh();
+				invalidate();
+				validate();
+				 }
+
+				
+			 };
+
+	/**
+	 * Method that checks to see if the camera should be moved based on variables north/south/east/west
+	 * These variables are changed in the main MouseListener method
+	 */
+	public void checkMoveCamera()
+	{
+		if(moveNorth&& startY > 0)
+			startY--;
+		else if(moveSouth&& startY < array.length-currentSize)
+			startY++;
+		else if(moveEast && startX < array.length-currentSize)
+			startX++;
+		else if(moveWest && startX > 0)
+			startX--;
+	}
+	
+	
 	JPanel grid;
 
-	Tile[][] array = new Tile[20][20];
+	Tile[][] array = new Tile[100][100];
 	Tile[][] visibleArray = new Tile[8][8];
 	
 	
 	private void buildGrid(){
 		System.out.println(array.length);
 
-		grid = new JPanel(){
+	grid = new JPanel(){
 			
 			public void paintComponent(Graphics g)
 			{
@@ -118,9 +173,6 @@ public class RPGApp extends JFrame {
 			
 		};
 		
-		grid.setLayout(new GridLayout(array.length,array.length));
-
-		
 		for(int n =0;n<array.length;n++){
 			for(int j = 0;j<array[n].length;j++){
 				array[n][j] = new Tile(n, j, 0);
@@ -130,10 +182,28 @@ public class RPGApp extends JFrame {
 				}
 				
 			//	array[n][j].setBackground(new Color(0,0,0,0));
-				grid.add(array[n][j]);
+				//grid.add(array[n][j]);
 			}
 		}
+		buildVisibleGrid();
+
 		repaint();
+	}
+	
+	/**
+	 * Builds the grid/camera
+	 */
+	public void buildVisibleGrid()
+	{
+		grid.removeAll();
+		
+		grid.setLayout(new GridLayout(currentSize,currentSize));
+		
+		for(int i = startY; i < currentSize+startY;i++)
+			for(int h = startX; h < currentSize+startX;h++)
+				grid.add(array[i][h]);
+			
+		
 	}
 		
 	JPanel characterDetailPanel;
@@ -552,14 +622,36 @@ public class RPGApp extends JFrame {
 				buildCharacterDetailPanel(temp);
 				//createAggressivePortraitWindow(temp, temp.occupyingUnit);
 			}
+			//System.out.println("x: " +temp.xPos + " y: " + temp.yPos);
+					
+			if(startY+currentSize-1 == temp.xPos)
+				moveSouth = true;
+			if(startY == temp.xPos)
+				moveNorth = true;
+			if(startX == temp.yPos)
+				moveWest = true;
+			if(startX+currentSize-1 == temp.yPos)
+				moveEast = true;
+		
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
+			Tile temp  = (Tile)e.getSource();
 			if(portraitWindowOpen){
 				portraitWindow.dispose();
 				portraitWindowOpen = false;
 			}
+			
+			if(startY+currentSize-1 == temp.xPos)
+				moveSouth = false;
+			if(startY == temp.xPos)
+				moveNorth = false;
+			if(startX == temp.yPos)
+				moveWest = false;
+			if(startX+currentSize-1 == temp.yPos)
+				moveEast = false;
+			
 		}
 
 		@Override
