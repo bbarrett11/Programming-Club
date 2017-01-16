@@ -1,6 +1,8 @@
 package RPG;
 
-public class Equipment {
+import java.io.*;
+
+public class Equipment implements Serializable{
 	public String name;
 	public int attack;
 	private int[] range;

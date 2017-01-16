@@ -1,8 +1,9 @@
 package RPG;
 
 import javax.swing.*;
+import java.io.*;
 
-public class Unit {
+public class Unit implements Serializable{
 	final String CHARACTER_ART_PATH = "Art\\"; //put before character name to get through the folders
 	
 	public ImageIcon graphic;
@@ -10,7 +11,7 @@ public class Unit {
 	public ImageIcon inactiveGraphic;
 	public ImageIcon attackAnimation;
 	public boolean placed;
-	public Tile occupiedSpace;
+	public transient Tile occupiedSpace;
 	public String name;
 	public int moveRange;
 	public int[] attackRange;
