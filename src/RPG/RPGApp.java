@@ -214,6 +214,8 @@ public class RPGApp extends JFrame {
 		repaint();
 	}
 	
+	private int unfilledSpawns = 0;
+	
 	private void buildGrid(String levelName) throws IOException{
 		System.out.println(array.length);
 
@@ -222,24 +224,31 @@ public class RPGApp extends JFrame {
 			public void paintComponent(Graphics g)
 			{
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon("Art\\background_tiles\\misc\\780x700 tile background.png").getImage(), 5,5, null);
+				g.drawImage(new ImageIcon("Art\\Maps\\"+ levelName + ".png").getImage(), 5,5, null);
 			
 			}
 			
 		};
 		
+		File initializer = new File(levelName + ".txt");
+		Scanner reader = new Scanner(initializer);
+		
+		if(!reader.next().equals(levelName)){
+			System.out.println("There is a problem with the level text file");
+		}
+		
+		int xLength = reader.nextInt();
+		int yLength = reader.nextInt();
+		
+		array = new Tile[yLength][xLength];
 		for(int n =0;n<array.length;n++){
 			for(int j = 0;j<array[n].length;j++){
-				array[n][j] = new Tile(n, j, 0);
-				array[n][j].addMouseListener(new MouseListenerTest());
-				if(j==array[n].length - 1){
-					//array[n][j].addMouseListener(new ScrollRightMouseListener());
-				}
+				array[n][j] = new Tile(n, j, reader.nextInt());
+				array[n][j].addMouseListener(new PlayerSpawnMouseListener());
 				
-			//	array[n][j].setBackground(new Color(0,0,0,0));
-				//grid.add(array[n][j]);
 			}
 		}
+		reader.close();
 		buildVisibleGrid();
 
 		repaint();
@@ -251,6 +260,13 @@ public class RPGApp extends JFrame {
 	public void buildVisibleGrid()
 	{
 		grid.removeAll();
+		
+		if(currentSize > array.length){ // this will be relevant if we can get the background and characters to
+			currentSize = array.length;//  scale, allowing small maps and zooming
+		}
+		if(currentSize > array[0].length){
+			currentSize = array[0].length;
+		}
 		
 		grid.setLayout(new GridLayout(currentSize,currentSize));
 		
@@ -974,6 +990,27 @@ public class RPGApp extends JFrame {
 		
 	}
 
+	private class PlayerSpawnMouseListener implements MouseListener{
+
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void mousePressed(MouseEvent e) {			
+		}
+
+		public void mouseReleased(MouseEvent e) {			
+		}
+
+		public void mouseEntered(MouseEvent e) {			
+		}
+
+		public void mouseExited(MouseEvent e) {			
+		}
+		
+	}
+	
 	private class ScrollRightMouseListener implements MouseListener{
 
 		@Override
