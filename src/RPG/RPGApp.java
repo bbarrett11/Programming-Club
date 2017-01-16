@@ -257,6 +257,7 @@ public class RPGApp extends JFrame {
 			
 			Unit initializedUnit = (Unit) objectInputFile.readObject();
 			initializedUnit.findImages();
+			p2Units.add(initializedUnit);
 			
 			int xSpawn = reader.nextInt();
 			int ySpawn = reader.nextInt();
@@ -435,8 +436,10 @@ public class RPGApp extends JFrame {
 			if(p1Units.size()<2){
 				p1Units.add(senorSavesTheDay);
 				p1Units.add(elLady);
-				p2Units.add(pizzaJew);
-				p2Units.add(christmasNinja);
+				if(p2Units.size()<1){
+					p2Units.add(pizzaJew);
+					p2Units.add(christmasNinja);
+				}
 			}
 			if(!senorSavesTheDay.placed){
 				array[1][1].place(senorSavesTheDay);
