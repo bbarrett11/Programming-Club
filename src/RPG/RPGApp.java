@@ -1039,12 +1039,6 @@ public class RPGApp extends JFrame {
 
 		public void mouseClicked(MouseEvent e) {
 			Tile temp = (Tile)e.getSource();
-			/* will check if tilecliked.colorTile canspawn, if can will open
-			 * a window for choosing unit from player roster.  Once chosen, 
-			 * tile setnotspawning and subtract 1 from unfilled spawns
-			 * 		on closing of this window check if unfilled spawns is 0, if it is,
-			 * 		remove this listener from all tiles and add mouselistenertest to all tiles
-			*/
 			if(temp.colorTile.canSpawn){
 				spawningTile = temp;
 				createSpawnSelectWindow();
