@@ -112,35 +112,10 @@ public class RPGApp extends JFrame {
 		//setVisible(true);
 	}
 	
-	ActionListener scrollRight = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			scroll(visibleArray[0][0],1,0);
-		}
-	};
-	
-	ActionListener scrollLeft = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			scroll(visibleArray[0][0],-1,0);
-		}
-	};
-	
-	ActionListener scrollUp = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			scroll(visibleArray[0][0],0,1);
-		}
-	};
-	
-	ActionListener scrollDown = new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			scroll(visibleArray[0][0], 0,-1);
-		}
-	};
-	
 	public Timer scrollTimer;//timer that runs the Scroll method
 	 
 	public int startY =0, startX = 0, //give the top left corner where the visible grid starts to build from array
-			currentSize = 20,  //how big the camera/visibleGrid will be
-			scrollCounter = 0;//counts number of time scroll has been enacted, turns all move variables to false every 10
+			currentSize = 20;  //how big the camera/visibleGrid will be
 	public boolean moveNorth = false,moveSouth = false,moveEast = false,moveWest = false; //tells if the mouse is in a square that should make the camera move 
 	
 	
@@ -162,17 +137,7 @@ public class RPGApp extends JFrame {
 				invalidate();
 				validate();
 				
-				scrollCounter++;
-				if(scrollCounter>=10){
-					moveNorth = false;
-					moveSouth = false;
-					moveEast = false;
-					moveWest = false;
-					scrollCounter = 0;
-				}
 				 }
-
-				
 			 };
 
 	/**
@@ -195,7 +160,6 @@ public class RPGApp extends JFrame {
 	JPanel grid;
 
 	Tile[][] array = new Tile[100][100];
-	Tile[][] visibleArray = new Tile[8][8];
 	
 	
 	private void buildGrid(){
@@ -239,7 +203,7 @@ public class RPGApp extends JFrame {
 			public void paintComponent(Graphics g)
 			{
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon("Art\\Maps\\"+ levelName + ".png").getImage(), 5,5, null);
+				g.drawImage(new ImageIcon("Art\\Maps\\"+ "Test" + ".png").getImage(), 5,5, null);
 			
 			}
 			
@@ -372,32 +336,7 @@ public class RPGApp extends JFrame {
 		
 		characterDetailPanel.updateUI();
 	}
-	
-	public void scroll(Tile topLeft, int xChange, int yChange){
-		int x = topLeft.xPos;
-		int y = topLeft.yPos;
-		
-		if(x<visibleArray[y].length-1 && xChange>0){
-			x+=xChange;
-		}
-		if(x>0 && xChange<0){
-			x-=xChange;
-		}
-		if(y<visibleArray.length-1 && yChange>0){
-			y+=yChange;
-		}
-		if(y>0 && yChange<0){
-			y-=yChange;
-		}
-		
-		array[0][0].removeMouseListener(array[0][0].getMouseListeners()[1]);
-		
-		for(int n = 0;n<visibleArray.length;n++){
-			for(int j = 0;j<visibleArray[n].length;j++){
-				visibleArray[n][j] = array[x+n][y+j];
-			}
-		}
-	}
+
 		
 	public void beginTurn(int playerNumber){
 		if(playerNumber==1){
@@ -749,16 +688,23 @@ public class RPGApp extends JFrame {
 				//createAggressivePortraitWindow(temp, temp.occupyingUnit);
 			}
 			//System.out.println("x: " +temp.xPos + " y: " + temp.yPos);
-					
+			//System.out.println("entered: ");		
 			if(startY+currentSize-1 == temp.xPos)
 				moveSouth = true;
-			if(startY == temp.xPos)
+			else if(startY == temp.xPos)
 				moveNorth = true;
-			if(startX == temp.yPos)
+			else if(startX == temp.yPos)
 				moveWest = true;
-			if(startX+currentSize-1 == temp.yPos)
+			else if(startX+currentSize-1 == temp.yPos)
 				moveEast = true;
-		
+			else
+			{
+				moveEast = false;
+				moveWest = false;
+				moveNorth = false;
+				moveSouth = false;
+
+			}
 		}
 
 		@Override
@@ -782,7 +728,7 @@ public class RPGApp extends JFrame {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			
+
 		}
 		
 		public void cancelMove(){
@@ -1092,16 +1038,24 @@ public class RPGApp extends JFrame {
 				//createAggressivePortraitWindow(temp, temp.occupyingUnit);
 			}
 			//System.out.println("x: " +temp.xPos + " y: " + temp.yPos);
-					
+			//System.out.println("startX: "+startX + "startY: "+startY);		
 			if(startY+currentSize-1 == temp.xPos)
 				moveSouth = true;
-			if(startY == temp.xPos)
+			else if(startY == temp.xPos)
 				moveNorth = true;
-			if(startX == temp.yPos)
+			else if(startX == temp.yPos)
 				moveWest = true;
-			if(startX+currentSize-1 == temp.yPos)
+			else if(startX+currentSize-1 == temp.yPos)
 				moveEast = true;
-		
+			else
+			{
+				moveEast = false;
+				moveWest = false;
+				moveNorth = false;
+				moveSouth = false;
+
+			}
+			//System.out.println("East: "+moveEast + " West: "+moveWest + " South: "+moveSouth+" North: "+moveNorth);
 		}
 
 		@Override
@@ -1219,146 +1173,7 @@ public class RPGApp extends JFrame {
 		
 	}
 	
-	private class ScrollRightMouseListener implements MouseListener{
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		Timer scrollRightTimer = new Timer(250, scrollRight);
-				
-		public void mouseEntered(MouseEvent e) {
-			//start timer
-			scrollRightTimer.start();
-		}
-
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			//stop timer
-			scrollRightTimer.stop();
-		}
 		
-	}
-	
-	private class ScrollLeftMouseListener implements MouseListener{
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		Timer scrollLeftTimer = new Timer(250, scrollLeft);
-				
-		public void mouseEntered(MouseEvent e) {
-			//start timer
-			scrollLeftTimer.start();
-		}
-
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			//stop timer
-			scrollLeftTimer.stop();
-		}
-		
-	}
-	
-	private class ScrollUpMouseListener implements MouseListener{
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		Timer scrollUpTimer = new Timer(250, scrollUp);
-				
-		public void mouseEntered(MouseEvent e) {
-			//start timer
-			scrollUpTimer.start();
-		}
-
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			//stop timer
-			scrollUpTimer.stop();
-		}
-		
-	}
-	
-	private class ScrollDownMouseListener implements MouseListener{
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		Timer scrollDownTimer = new Timer(250, scrollDown);
-				
-		public void mouseEntered(MouseEvent e) {
-			//start timer
-			scrollDownTimer.start();
-		}
-
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			//stop timer
-			scrollDownTimer.stop();
-		}
-		
-	}
-	
 	/**
 	 * Does something
 	 * @param action String that tells us something
