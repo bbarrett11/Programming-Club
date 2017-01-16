@@ -516,7 +516,7 @@ public class RPGApp extends JFrame {
 		}
 		
 		if(attackRange!=0){
-			if(x>0){
+			if(x>0 && x - movingUnit.occupiedSpace.xPos <= 0){
 				if(attackRange>0){
 					setAttack(array[x-1][y], attackingAllignment, attackRange-1);
 				}
@@ -524,7 +524,7 @@ public class RPGApp extends JFrame {
 					setAttack(array[x-1][y], attackingAllignment, attackRange+1);
 				}
 			}
-			if(x<array.length-1){
+			if(x<array.length-1 && x-movingUnit.occupiedSpace.xPos>=0){
 				if(attackRange>0){
 					setAttack(array[x+1][y], attackingAllignment, attackRange-1);
 				}
@@ -533,7 +533,7 @@ public class RPGApp extends JFrame {
 				}
 			}
 			//attackRange = 0;
-			if(y>0){
+			if(y>0 && y-movingUnit.occupiedSpace.yPos<=0){
 				if(attackRange>0){
 					setAttack(array[x][y-1], attackingAllignment, attackRange-1);
 				}
@@ -541,7 +541,7 @@ public class RPGApp extends JFrame {
 					setAttack(array[x][y-1], attackingAllignment, attackRange+1);
 				}
 			}
-			if(y<array[x].length-1){
+			if(y<array[x].length-1 && y-movingUnit.occupiedSpace.yPos>=0){
 				if(attackRange>0){
 					setAttack(array[x][y+1], attackingAllignment, attackRange-1);
 				}
@@ -679,7 +679,7 @@ public class RPGApp extends JFrame {
 			}
 			
 			if(attackRange!=0){
-				if(x>0){
+				if(x>0 && x - movingUnit.occupiedSpace.xPos <= 0){ //go up (because x and y are switched)
 					if(attackRange>0){
 						checkAttack(array[x-1][y], attackingAllignment, attackRange-1);
 					}
@@ -687,7 +687,7 @@ public class RPGApp extends JFrame {
 						checkAttack(array[x-1][y], attackingAllignment, attackRange+1);
 					}
 				}
-				if(x<array.length-1){
+				if(x<array.length-1 && x-movingUnit.occupiedSpace.xPos>=0){ //go down (because x and y are switched)
 					if(attackRange>0){
 						checkAttack(array[x+1][y], attackingAllignment, attackRange-1);
 					}
@@ -696,7 +696,7 @@ public class RPGApp extends JFrame {
 					}
 				}
 				//attackRange = 0;
-				if(y>0){
+				if(y>0 && y - movingUnit.occupiedSpace.yPos <= 0){ //go left
 					if(attackRange>0){
 						checkAttack(array[x][y-1], attackingAllignment, attackRange-1);
 					}
@@ -704,7 +704,7 @@ public class RPGApp extends JFrame {
 						checkAttack(array[x][y-1], attackingAllignment, attackRange+1);
 					}
 				}
-				if(y<array[x].length-1){
+				if(y<array[x].length-1 && y-movingUnit.occupiedSpace.yPos>=0){ //go right
 					if(attackRange>0){
 						checkAttack(array[x][y+1], attackingAllignment, attackRange-1);
 					}
