@@ -1,6 +1,5 @@
 package RPG;
-//import needs;
-//import needed classes;
+
 import java.awt.event.*;
 import java.util.*;
 
@@ -9,6 +8,7 @@ import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
 
 import java.awt.*;
+import java.io.*;
 
 public class RPGApp extends JFrame {
 	public ArrayList<Unit> p1Units = new ArrayList<Unit>();
@@ -61,6 +61,30 @@ public class RPGApp extends JFrame {
 		scrollTimer = new Timer(250, Scroll); //start the Scroll timer, every .25 seconds will check to see if the screen has to move
 		scrollTimer.start();
 
+	}
+	
+	public RPGApp(String levelName) throws IOException{
+		UIManager.put("Label.font", new Font("Garamond", Font.BOLD, 14));
+		
+		setTitle(levelName);
+		setSize(1000,750);
+		setResizable(false);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+				
+		buildGrid(levelName);		
+		add(grid);
+		characterDetailPanel = new JPanel();
+		characterDetailPanel.setLayout(new BorderLayout());
+
+		setVisible(true);
+	
+		refreshGrid();
+		add(characterDetailPanel);
+
+		
+		scrollTimer = new Timer(250, Scroll); //start the Scroll timer, every .25 seconds will check to see if the screen has to move
+		scrollTimer.start();
 	}
 	
 	public void refreshGrid(){
@@ -162,7 +186,38 @@ public class RPGApp extends JFrame {
 	private void buildGrid(){
 		System.out.println(array.length);
 
-	grid = new JPanel(){
+		grid = new JPanel(){
+			
+			public void paintComponent(Graphics g)
+			{
+				super.paintComponent(g);
+				g.drawImage(new ImageIcon("Art\\background_tiles\\misc\\780x700 tile background.png").getImage(), 5,5, null);
+			
+			}
+			
+		};
+		
+		for(int n =0;n<array.length;n++){
+			for(int j = 0;j<array[n].length;j++){
+				array[n][j] = new Tile(n, j, 0);
+				array[n][j].addMouseListener(new MouseListenerTest());
+				if(j==array[n].length - 1){
+					//array[n][j].addMouseListener(new ScrollRightMouseListener());
+				}
+				
+			//	array[n][j].setBackground(new Color(0,0,0,0));
+				//grid.add(array[n][j]);
+			}
+		}
+		buildVisibleGrid();
+
+		repaint();
+	}
+	
+	private void buildGrid(String levelName) throws IOException{
+		System.out.println(array.length);
+
+		grid = new JPanel(){
 			
 			public void paintComponent(Graphics g)
 			{
