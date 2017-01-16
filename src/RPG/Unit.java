@@ -6,10 +6,10 @@ import java.io.*;
 public class Unit implements Serializable{
 	final String CHARACTER_ART_PATH = "Art\\"; //put before character name to get through the folders
 	
-	public ImageIcon graphic;
-	public ImageIcon portrait;
-	public ImageIcon inactiveGraphic;
-	public ImageIcon attackAnimation;
+	public transient ImageIcon graphic;
+	public transient ImageIcon portrait;
+	public transient ImageIcon inactiveGraphic;
+	public transient ImageIcon attackAnimation;
 	public boolean placed;
 	public transient Tile occupiedSpace;
 	public String name;
@@ -101,6 +101,13 @@ public class Unit implements Serializable{
 		speed = speedInput;
 		battleCry = "I will defeat you!";
 		
+	}
+	
+	public void findImages(){
+		graphic = new ImageIcon(CHARACTER_ART_PATH + name + ".png");
+		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + name + "Inactive.png");
+		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + name + "Attack.gif");
+		portrait = new ImageIcon(CHARACTER_ART_PATH + name + "Portrait.png");
 	}
 	
 	public void setPlaced(boolean input){

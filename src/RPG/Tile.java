@@ -10,6 +10,7 @@ public class Tile extends JPanel{
 	public boolean occupied;
 	public boolean inMoveRange;
 	public boolean canAttack;
+	public boolean canSpawn;
 	public int xPos;
 	public int yPos;
 	
@@ -56,6 +57,7 @@ public class Tile extends JPanel{
 		occupied = false;
 		inMoveRange = false;
 		canAttack = false;
+		canSpawn = false;
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		colorTile = new Tile(4);
 		
@@ -76,6 +78,7 @@ public class Tile extends JPanel{
 	public Tile(int joke){
 		inMoveRange = false;
 		canAttack = false;
+		canSpawn = false;
 		setOpaque(false);
 	}
 	
@@ -143,6 +146,17 @@ public class Tile extends JPanel{
 	public void setNotAttacking(){
 		setOpaque(false);
 		canAttack = false;
+	}
+	
+	public void setSpawning(){
+		setBackground(new Color(0,255,0,50));
+		canSpawn = true;
+		setOpaque(true);
+	}
+	
+	public void setNotSpawning(){
+		setOpaque(false);
+		canSpawn = false;
 	}
 	
 	private void drawHealthBar(Graphics g){
