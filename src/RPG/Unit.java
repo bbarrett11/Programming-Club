@@ -13,6 +13,7 @@ public class Unit implements Serializable{
 	public boolean placed;
 	public transient Tile occupiedSpace;
 	public String name;
+	public String type;
 	public int moveRange;
 	public int[] attackRange;
 	public int allignment;
@@ -74,7 +75,7 @@ public class Unit implements Serializable{
 		
 	}
 	
-	public Unit(String unitName, int allignmentInput, String weaponName, int maxEnthusiasmInput, int toughnessInput, int maxFocusInput,
+	public Unit(String unitName, String unitType, int allignmentInput, String weaponName, int maxEnthusiasmInput, int toughnessInput, int maxFocusInput,
 			int dilligenceInput, int strengthInput, int gloryInput, int avoidanceInput, int speedInput){
 		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
 		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + unitName + "Inactive.png");
@@ -82,6 +83,7 @@ public class Unit implements Serializable{
 		portrait = new ImageIcon(CHARACTER_ART_PATH + unitName + "Portrait.png");
 		placed = false;
 		name = unitName;
+		type = unitType;
 		moveRange = 6;
 		allignment = allignmentInput;
 		weapon = new Equipment(weaponName);
@@ -104,7 +106,7 @@ public class Unit implements Serializable{
 	}
 	
 	public void findImages(){
-		graphic = new ImageIcon(CHARACTER_ART_PATH + name + ".png");
+		graphic = new ImageIcon(CHARACTER_ART_PATH + type + "\\" + name + ".png");
 		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + name + "Inactive.png");
 		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + name + "Attack.gif");
 		portrait = new ImageIcon(CHARACTER_ART_PATH + name + "Portrait.png");

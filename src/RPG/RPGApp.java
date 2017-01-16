@@ -19,7 +19,7 @@ public class RPGApp extends JFrame {
 	public ArrayList<Unit>[] players;
 	
 	public static void main(String[] args) throws Exception{
-		RPGApp start = new RPGApp();
+		RPGApp start = new RPGApp("Test");
 	}
 		
 	Unit senorSavesTheDay = new Unit("SenorSavesTheDay",0, "swordIron Sword");
@@ -255,7 +255,9 @@ public class RPGApp extends JFrame {
 			FileInputStream inStream = new FileInputStream("Units\\"+ levelName + placingUnit + ".dat");
 			ObjectInputStream objectInputFile = new ObjectInputStream(inStream);
 			
+			System.out.println("No error before");
 			Unit initializedUnit = (Unit) objectInputFile.readObject();
+			System.out.println("No error after?");
 			initializedUnit.findImages();
 			p2Units.add(initializedUnit);
 			
@@ -1024,13 +1026,14 @@ public class RPGApp extends JFrame {
 	private class PlayerSpawnMouseListener implements MouseListener{
 
 		public void mouseClicked(MouseEvent e) {
-			/* TODO Auto-generated method stub
-			 * will check if tilecliked.colorTile canspawn, if can will open
+			/* will check if tilecliked.colorTile canspawn, if can will open
 			 * a window for choosing unit from player roster.  Once chosen, 
 			 * tile setnotspawning and subtract 1 from unfilled spawns
 			 * 		on closing of this window check if unfilled spawns is 0, if it is,
 			 * 		remove this listener from all tiles and add mouselistenertest to all tiles
 			*/
+			System.out.println(p2Units.size());
+			refresh();
 		}
 
 		public void mousePressed(MouseEvent e) {			
