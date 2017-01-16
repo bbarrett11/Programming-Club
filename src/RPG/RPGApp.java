@@ -18,7 +18,7 @@ public class RPGApp extends JFrame {
 	
 	public ArrayList<Unit>[] players;
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws Exception{
 		RPGApp start = new RPGApp();
 	}
 		
@@ -63,7 +63,7 @@ public class RPGApp extends JFrame {
 
 	}
 	
-	public RPGApp(String levelName) throws IOException{
+	public RPGApp(String levelName) throws Exception{
 		UIManager.put("Label.font", new Font("Garamond", Font.BOLD, 14));
 		
 		setTitle(levelName);
@@ -216,7 +216,7 @@ public class RPGApp extends JFrame {
 	
 	private int unfilledSpawns = 0;
 	
-	private void buildGrid(String levelName) throws IOException{
+	private void buildGrid(String levelName) throws Exception{
 		System.out.println(array.length);
 
 		grid = new JPanel(){
@@ -230,7 +230,7 @@ public class RPGApp extends JFrame {
 			
 		};
 		
-		File initializer = new File(levelName + ".txt");
+		File initializer = new File("Levels\\"+ levelName + ".txt");
 		Scanner reader = new Scanner(initializer);
 		
 		if(!reader.next().equals(levelName)){
@@ -248,6 +248,34 @@ public class RPGApp extends JFrame {
 				
 			}
 		}
+		
+		String placingUnit = reader.next();
+		
+		while(!placingUnit.equals("Player")){
+			FileInputStream inStream = new FileInputStream("Units\\"+ levelName + placingUnit + ".dat");
+			ObjectInputStream objectInputFile = new ObjectInputStream(inStream);
+			
+			Unit initializedUnit = (Unit) objectInputFile.readObject();
+			initializedUnit.findImages();
+			
+			int xSpawn = reader.nextInt();
+			int ySpawn = reader.nextInt();
+			
+			array[ySpawn][xSpawn].place(initializedUnit);
+			
+			objectInputFile.close();
+			placingUnit = reader.next();
+		}
+		
+		while(reader.hasNext()){
+			//read coordinates for set spawning
+			int xSpawn = reader.nextInt();
+			int ySpawn = reader.nextInt();
+			
+			array[ySpawn][xSpawn].colorTile.setSpawning();
+			unfilledSpawns++;
+		}
+		
 		reader.close();
 		buildVisibleGrid();
 
@@ -993,8 +1021,13 @@ public class RPGApp extends JFrame {
 	private class PlayerSpawnMouseListener implements MouseListener{
 
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			/* TODO Auto-generated method stub
+			 * will check if tilecliked.colorTile canspawn, if can will open
+			 * a window for choosing unit from player roster.  Once chosen, 
+			 * tile setnotspawning and subtract 1 from unfilled spawns
+			 * 		on closing of this window check if unfilled spawns is 0, if it is,
+			 * 		remove this listener from all tiles and add mouselistenertest to all tiles
+			*/
 		}
 
 		public void mousePressed(MouseEvent e) {			
