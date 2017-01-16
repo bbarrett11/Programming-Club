@@ -149,7 +149,7 @@ public class Tile extends JPanel{
 	}
 	
 	public void setSpawning(){
-		setBackground(new Color(0,255,0,50));
+		setBackground(new Color(0,255,0,80));
 		canSpawn = true;
 		setOpaque(true);
 	}

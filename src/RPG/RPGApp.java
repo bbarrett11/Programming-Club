@@ -13,19 +13,21 @@ import java.io.*;
 public class RPGApp extends JFrame {
 	public ArrayList<Unit> p1Units = new ArrayList<Unit>();
 	public ArrayList<Unit> p2Units = new ArrayList<Unit>();
+	public ArrayList<Unit> roster = new ArrayList<Unit>(); //this will actually be made in overworld menus class
 	
 	public int activePlayer = 0;
 	
 	public ArrayList<Unit>[] players;
 	
 	public static void main(String[] args) throws Exception{
+		//the actual roster will probably be maintained in the class that handles overworld menus, this is just combat scenarios
 		RPGApp start = new RPGApp("Test");
 	}
 		
 	Unit senorSavesTheDay = new Unit("SenorSavesTheDay",0, "swordIron Sword");
 	Unit pizzaJew = new Unit("PizzaJew",1, "Fists");
 	Unit elLady = new Unit("ElLady",0, "bowCrappy Bow");
-	Unit christmasNinja = new Unit("ChristmasNinja",1, "throwThrowing Knives");
+	Unit christmasNinja = new Unit("ChristmasNinja",0, "throwThrowing Knives");
 	SpringLayout layout;
 	
 	public void myAttackWillRainDownFromTheSky(){
@@ -71,6 +73,9 @@ public class RPGApp extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		roster.add(senorSavesTheDay);
+		roster.add(elLady);
+		roster.add(christmasNinja);
 				
 		buildGrid(levelName);		
 		add(grid);
@@ -255,9 +260,7 @@ public class RPGApp extends JFrame {
 			FileInputStream inStream = new FileInputStream("Units\\"+ levelName + placingUnit + ".dat");
 			ObjectInputStream objectInputFile = new ObjectInputStream(inStream);
 			
-			System.out.println("No error before");
 			Unit initializedUnit = (Unit) objectInputFile.readObject();
-			System.out.println("No error after?");
 			initializedUnit.findImages();
 			p2Units.add(initializedUnit);
 			
@@ -276,7 +279,10 @@ public class RPGApp extends JFrame {
 			int ySpawn = reader.nextInt();
 			
 			array[ySpawn][xSpawn].colorTile.setSpawning();
-			unfilledSpawns++;
+			if(unfilledSpawns!=roster.size())
+				unfilledSpawns++;
+			
+			System.out.println("Unfilled Spawns: " + unfilledSpawns);
 		}
 		
 		reader.close();
@@ -438,11 +444,13 @@ public class RPGApp extends JFrame {
 			if(p1Units.size()<2){
 				p1Units.add(senorSavesTheDay);
 				p1Units.add(elLady);
+				p1Units.add(christmasNinja);
 				if(p2Units.size()<1){
 					p2Units.add(pizzaJew);
 					p2Units.add(christmasNinja);
 				}
 			}
+			/*
 			if(!senorSavesTheDay.placed){
 				array[1][1].place(senorSavesTheDay);
 				beginTurn(1);
@@ -454,8 +462,9 @@ public class RPGApp extends JFrame {
 				array[4][6].place(elLady);
 			}
 			if(!christmasNinja.placed){
-				array[3][0].place(christmasNinja);
+				array[4][0].place(christmasNinja);
 			}
+			*/
 			refresh();
 			System.out.println(arg0.getKeyCode());
 				
@@ -485,6 +494,10 @@ public class RPGApp extends JFrame {
 	Tile moveFromTile;
 	Tile moveToTile;
 	Tile attackFromTile;
+	
+	JFrame spawnSelectWindow;
+	JPanel spawnSelectPanel;
+	Tile spawningTile;
 	
 	JFrame actionWindow;
 	JPanel actionPanel;
@@ -719,7 +732,6 @@ public class RPGApp extends JFrame {
 		
 		
 		
-		@Override
 		public void mouseEntered(MouseEvent e) {
 			Tile temp = (Tile)e.getSource();
 			if(temp.occupied && !actionMenuOpen && !attackFound){
@@ -1026,14 +1038,41 @@ public class RPGApp extends JFrame {
 	private class PlayerSpawnMouseListener implements MouseListener{
 
 		public void mouseClicked(MouseEvent e) {
+			Tile temp = (Tile)e.getSource();
 			/* will check if tilecliked.colorTile canspawn, if can will open
 			 * a window for choosing unit from player roster.  Once chosen, 
 			 * tile setnotspawning and subtract 1 from unfilled spawns
 			 * 		on closing of this window check if unfilled spawns is 0, if it is,
 			 * 		remove this listener from all tiles and add mouselistenertest to all tiles
 			*/
-			System.out.println(p2Units.size());
+			if(temp.colorTile.canSpawn){
+				spawningTile = temp;
+				createSpawnSelectWindow();
+			}
+			
 			refresh();
+		}
+		
+		private void createSpawnSelectWindow(){
+			spawnSelectWindow = new JFrame();
+			
+			spawnSelectPanel = new JPanel();
+			spawnSelectPanel.setBackground(Color.WHITE);
+			spawnSelectPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, true));
+			spawnSelectPanel.setLayout(new BoxLayout(spawnSelectPanel, BoxLayout.Y_AXIS));
+			spawnSelectWindow.setSize(130, roster.size() * 24);   
+			spawnSelectWindow.add(spawnSelectPanel);
+			spawnSelectWindow.addWindowListener(new SpawnSelectWindowListener());
+			spawnSelectWindow.setUndecorated(true);
+			spawnSelectWindow.setLocation(getX() + spawningTile.getX() + spawningTile.getWidth() + 10, 
+					getY() + spawningTile.getY()+ spawningTile.getHeight()/2);
+			
+			for(int n = 0;n<roster.size();n++){
+				JLabel label = new JLabel(roster.get(n).name);
+				label.addMouseListener(new SpawnSelectLabelListener());
+				spawnSelectPanel.add(label);	
+			}
+			spawnSelectWindow.setVisible(true);
 		}
 
 		public void mousePressed(MouseEvent e) {			
@@ -1042,10 +1081,136 @@ public class RPGApp extends JFrame {
 		public void mouseReleased(MouseEvent e) {			
 		}
 
-		public void mouseEntered(MouseEvent e) {			
+		public void mouseEntered(MouseEvent e) {
+			Tile temp = (Tile)e.getSource();
+			if(temp.occupied && !actionMenuOpen && !attackFound){
+				buildCharacterDetailPanel(temp);
+				//createAggressivePortraitWindow(temp, temp.occupyingUnit);
+			}
+			//System.out.println("x: " +temp.xPos + " y: " + temp.yPos);
+					
+			if(startY+currentSize-1 == temp.xPos)
+				moveSouth = true;
+			if(startY == temp.xPos)
+				moveNorth = true;
+			if(startX == temp.yPos)
+				moveWest = true;
+			if(startX+currentSize-1 == temp.yPos)
+				moveEast = true;
+		
 		}
 
-		public void mouseExited(MouseEvent e) {			
+		@Override
+		public void mouseExited(MouseEvent e) {
+			Tile temp  = (Tile)e.getSource();
+			if(portraitWindowOpen){
+				portraitWindow.dispose();
+				portraitWindowOpen = false;
+			}
+			
+			if(startY+currentSize-1 == temp.xPos)
+				moveSouth = false;
+			if(startY == temp.xPos)
+				moveNorth = false;
+			if(startX == temp.yPos)
+				moveWest = false;
+			if(startX+currentSize-1 == temp.yPos)
+				moveEast = false;
+			
+		}
+
+	}
+	
+	private class SpawnSelectWindowListener implements WindowListener{
+
+		public void windowOpened(WindowEvent e) {
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			if(unfilledSpawns==0){
+				for(int n = 0;n<array.length;n++){
+					for(int j = 0;j<array[n].length;j++){
+						array[n][j].colorTile.setNotSpawning();
+						array[n][j].removeMouseListener(new PlayerSpawnMouseListener());
+						array[n][j].addMouseListener(new MouseListenerTest());
+					}
+				}
+				beginTurn(1);
+			}
+			spawnSelectWindow.dispose();
+		}
+		
+	}
+	
+	private class SpawnSelectLabelListener implements MouseListener{
+
+		public void mouseClicked(MouseEvent e) {
+			String unitName = ((JLabel)e.getSource()).getText();
+			for(int n = 0;n<roster.size();n++){
+				if(unitName.equals(roster.get(n).name)){
+					spawningTile.place(roster.get(n));
+					spawningTile.colorTile.setNotSpawning();
+					p1Units.add(roster.get(n));
+					roster.remove(n);
+					unfilledSpawns--;
+					System.out.println("Unfilled Spawns: " + unfilledSpawns);
+					spawnSelectWindow.dispose();
+					break;
+				}
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void mouseEntered(MouseEvent e) {
+			JLabel temp = (JLabel)e.getSource();
+			temp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));	
+		}
+
+		public void mouseExited(MouseEvent e) {
+			JLabel temp = (JLabel)e.getSource();
+			temp.setBorder(null);
 		}
 		
 	}
@@ -1272,17 +1437,12 @@ public class RPGApp extends JFrame {
 			
 		}
 
-		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
 			JLabel temp = (JLabel)e.getSource();
-			temp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
-			
+			temp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));	
 		}
 
-		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
 			JLabel temp = (JLabel)e.getSource();
 			temp.setBorder(null);
 		}
