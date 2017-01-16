@@ -139,7 +139,8 @@ public class RPGApp extends JFrame {
 	public Timer scrollTimer;//timer that runs the Scroll method
 	 
 	public int startY =0, startX = 0, //give the top left corner where the visible grid starts to build from array
-			currentSize = 20;//how big the camera/visibleGrid will be 
+			currentSize = 20,  //how big the camera/visibleGrid will be
+			scrollCounter = 0;//counts number of time scroll has been enacted, turns all move variables to false every 10
 	public boolean moveNorth = false,moveSouth = false,moveEast = false,moveWest = false; //tells if the mouse is in a square that should make the camera move 
 	
 	
@@ -160,6 +161,15 @@ public class RPGApp extends JFrame {
 				refresh();
 				invalidate();
 				validate();
+				
+				scrollCounter++;
+				if(scrollCounter>=10){
+					moveNorth = false;
+					moveSouth = false;
+					moveEast = false;
+					moveWest = false;
+					scrollCounter = 0;
+				}
 				 }
 
 				
