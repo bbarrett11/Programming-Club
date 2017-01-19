@@ -553,10 +553,10 @@ public class RPGApp extends JFrame {
 			}
 			if(y<array[x].length-1 && y-defendUnit.occupiedSpace.yPos>=0){
 				if(attackRange>0){
-					setAttack(array[x][y+1], attackingAllignment, attackRange-1);
+					checkCounterAttack(array[x][y+1], attackingAllignment, attackRange-1);
 				}
 				else{
-					setAttack(array[x][y+1], attackingAllignment, attackRange+1);
+					checkCounterAttack(array[x][y+1], attackingAllignment, attackRange+1);
 				}
 			}
 		}
@@ -1508,7 +1508,7 @@ public class RPGApp extends JFrame {
 			attackFromTile = moveToTile;
 			attackUnit.active = false;
 			
-			checkEnd(attackUnit.allignment);
+			//checkEnd(attackUnit.allignment);
 			cancelAttack();
 			animationOpen = false;
 			
@@ -1567,9 +1567,10 @@ public class RPGApp extends JFrame {
 
 				animationWindow.setUndecorated(true);
 				animationWindow.setSize(350, 300);
-				animationWindow.setLocation(getX() + WIDTH/2, getY() + HEIGHT/2);
+				animationWindow.setLocation(getX() + getWidth()/2, getY() + getHeight()/2 - animationWindow.getHeight()/2);
 				
 				animationWindow.setLayout(new BorderLayout());
+				animationWindow.addWindowListener(new AnimationWindowListener());
 				JPanel animationPanel = new JPanel();
 				JPanel emptyPanel1 = new JPanel();
 				emptyPanel1.setBackground(Color.CYAN);
@@ -1625,6 +1626,52 @@ public class RPGApp extends JFrame {
 		Timer moveAttackTextTimer = new Timer(500, moveAttackText);
 		
 		int labelCount;
+		
+	}
+	
+	private class AnimationWindowListener implements WindowListener{
+
+		@Override
+		public void windowOpened(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			animationWindow.dispose();
+			checkEnd(movingUnit.allignment);
+		}
 		
 	}
 	
