@@ -84,7 +84,7 @@ public class RPGApp extends JFrame {
 
 		setVisible(true);
 	
-		refreshGrid();
+	//	refreshGrid();
 		add(characterDetailPanel);
 
 		
@@ -516,6 +516,52 @@ public class RPGApp extends JFrame {
 		}
 	}
 	
+	public void checkCounterAttack(Tile inputTile, int attackingAllignment, int attackRange){
+		int x = inputTile.xPos;
+		int y = inputTile.yPos;
+		if(attackRange>=0){
+			if(inputTile.occupied && inputTile.occupyingUnit.equals(attackUnit)){
+				attackFound = true;
+				refresh();
+			}
+		}
+		
+		if(attackRange!=0){
+			if(x>0 && x - defendUnit.occupiedSpace.xPos <= 0){
+				if(attackRange>0){
+					checkCounterAttack(array[x-1][y], attackingAllignment, attackRange-1);
+				}
+				else{
+					checkCounterAttack(array[x-1][y], attackingAllignment, attackRange+1);
+				}
+			}
+			if(x<array.length-1 && x-defendUnit.occupiedSpace.xPos>=0){
+				if(attackRange>0){
+					checkCounterAttack(array[x+1][y], attackingAllignment, attackRange-1);
+				}
+				else{
+					checkCounterAttack(array[x+1][y], attackingAllignment, attackRange+1);
+				}
+			}
+			if(y>0 && y-defendUnit.occupiedSpace.yPos<=0){
+				if(attackRange>0){
+					checkCounterAttack(array[x][y-1], attackingAllignment, attackRange-1);
+				}
+				else{
+					checkCounterAttack(array[x][y-1], attackingAllignment, attackRange+1);
+				}
+			}
+			if(y<array[x].length-1 && y-defendUnit.occupiedSpace.yPos>=0){
+				if(attackRange>0){
+					setAttack(array[x][y+1], attackingAllignment, attackRange-1);
+				}
+				else{
+					setAttack(array[x][y+1], attackingAllignment, attackRange+1);
+				}
+			}
+		}
+	}
+	
 	public void cancelAttack(){
 		attackFound = false;
 		for(int n = 0;n<array.length;n++){
@@ -936,7 +982,7 @@ public class RPGApp extends JFrame {
 			
 			attackFound = false;
 			for(int range:defendingUnit.attackRange){
-				checkAttack(defendingUnit.occupiedSpace, defendingUnit.allignment, range);
+				checkCounterAttack(defendingUnit.occupiedSpace, defendingUnit.allignment, range);
 			}
 			if(!attackFound){
 				defendingDamage.setText("Damage: --");
@@ -1433,7 +1479,7 @@ public class RPGApp extends JFrame {
 				
 				attackFound = false;
 				for(int range:defendUnit.attackRange){
-					setAttack(defendUnit.occupiedSpace, defendUnit.allignment, range);	
+					checkCounterAttack(defendUnit.occupiedSpace, defendUnit.allignment, range);	
 				}
 				if(attackFound){
 					counterAttack = true;
