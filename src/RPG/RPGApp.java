@@ -42,13 +42,13 @@ public class RPGApp extends JFrame {
 	public RPGApp(){
 		
 		UIManager.put("Label.font", new Font("Garamond", Font.BOLD, 14));
-		
+
 		setTitle("Grid");
 		setSize(1000,750);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addKeyListener(new SpawnListener());
-				
+		
 		buildGrid();		
 		add(grid);
 		characterDetailPanel = new JPanel();
@@ -156,11 +156,9 @@ public class RPGApp extends JFrame {
 			startX--;
 	}
 	
-	
 	JPanel grid;
 
 	Tile[][] array = new Tile[100][100];
-	
 	
 	private void buildGrid(){
 		System.out.println(array.length);
@@ -171,9 +169,11 @@ public class RPGApp extends JFrame {
 			{
 				super.paintComponent(g);
 				g.drawImage(new ImageIcon("Art\\background_tiles\\misc\\780x700 tile background.png").getImage(), 5,5, null);
-			
 			}
-			
+			public void update(Graphics g)
+			{
+				paint(g);
+			}
 		};
 		
 		for(int n =0;n<array.length;n++){
@@ -205,6 +205,10 @@ public class RPGApp extends JFrame {
 				super.paintComponent(g);
 				g.drawImage(new ImageIcon("Art\\Maps\\"+ "Test" + ".png").getImage(), 5,5, null);
 			
+			}
+			public void update(Graphics g)
+			{
+				paint(g);
 			}
 			
 		};
