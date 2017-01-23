@@ -389,7 +389,6 @@ public class RPGApp extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent arg0) {
-			// TODO Auto-generated method stub
 			if(p1Units.size()<2){
 				p1Units.add(senorSavesTheDay);
 				p1Units.add(elLady);
@@ -424,18 +423,10 @@ public class RPGApp extends JFrame {
 			}
 			
 		}
-
 		@Override
-		public void keyReleased(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void keyReleased(KeyEvent arg0) {}
 		@Override
-		public void keyTyped(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
+		public void keyTyped(KeyEvent arg0) {}
 		
 	}
 	
@@ -1071,11 +1062,9 @@ public class RPGApp extends JFrame {
 			spawnSelectWindow.setVisible(true);
 		}
 
-		public void mousePressed(MouseEvent e) {			
-		}
+		public void mousePressed(MouseEvent e) {}
 
-		public void mouseReleased(MouseEvent e) {			
-		}
+		public void mouseReleased(MouseEvent e) {}
 
 		public void mouseEntered(MouseEvent e) {
 			Tile temp = (Tile)e.getSource();
@@ -1127,38 +1116,17 @@ public class RPGApp extends JFrame {
 	
 	private class SpawnSelectWindowListener implements WindowListener{
 
-		public void windowOpened(WindowEvent e) {
-		}
-
+		public void windowOpened(WindowEvent e) {}
 		@Override
-		public void windowClosing(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowClosing(WindowEvent e) {}
 		@Override
-		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowClosed(WindowEvent e) {}
 		@Override
-		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowIconified(WindowEvent e) {}
 		@Override
-		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowDeiconified(WindowEvent e) {}
 		@Override
-		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+		public void windowActivated(WindowEvent e) {}
 
 		@Override
 		public void windowDeactivated(WindowEvent e) {
@@ -1196,16 +1164,9 @@ public class RPGApp extends JFrame {
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void mousePressed(MouseEvent e) {}
 		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+		public void mouseReleased(MouseEvent e) {}
 
 		public void mouseEntered(MouseEvent e) {
 			JLabel temp = (JLabel)e.getSource();
@@ -1218,7 +1179,6 @@ public class RPGApp extends JFrame {
 		}
 		
 	}
-	
 		
 	/**
 	 * Does something
@@ -1284,24 +1244,14 @@ public class RPGApp extends JFrame {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
 			JLabel temp = (JLabel)e.getSource();
 			act(temp.getText());
 			
 		}
-
 		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void mousePressed(MouseEvent e) {}
 		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void mouseReleased(MouseEvent e) {}
 		public void mouseEntered(MouseEvent e) {
 			JLabel temp = (JLabel)e.getSource();
 			temp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));	
@@ -1313,16 +1263,12 @@ public class RPGApp extends JFrame {
 		}
 		
 	}
-	
-	
+		
 	private class ActionMenuKeyListener implements KeyListener{
 
-		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
-		}
+		public void keyTyped(KeyEvent e) {}
 
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
 			if(e.getKeyCode()==27){ // escape
 				if(actionMenuOpen){
 					actionWindow.dispose();
@@ -1337,47 +1283,22 @@ public class RPGApp extends JFrame {
 				actionWindow.setLocation(getX() + moveToTile.getX() + moveToTile.getWidth() + 10, 
 						getY() +  moveToTile.getY() + actionWindow.getHeight()/2);
 			}
-			/*
-			
-			else if(e.getKeyCode()==38){ //up arrow key
-				actionWindow.setLocation(moveToTile.getX() - moveToTile.getWidth() - 20, actionWindow.getY());
-				System.out.println("working");
-			}
-			else if(e.getKeyCode()==40){ //down arrow key
-				actionWindow.setLocation(moveToTile.getX() - moveToTile.getWidth() - 20, actionWindow.getY());
-				System.out.println("working");
-			}
-			*/
+
 		}
 
-		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+		public void keyReleased(KeyEvent e) {}
 		
 	}
-	
 	
 	private class ActionWindowListener implements WindowListener{
 
 		@Override
-		public void windowActivated(WindowEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowActivated(WindowEvent arg0) {}
 		@Override
-		public void windowClosed(WindowEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowClosed(WindowEvent arg0) {}
 		@Override
-		public void windowClosing(WindowEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowClosing(WindowEvent arg0) {}
+		
 		public void windowDeactivated(WindowEvent arg0) {
 			System.out.println("REMEMBER ME");
 			moveToTile.remove(movingUnit);
@@ -1398,64 +1319,28 @@ public class RPGApp extends JFrame {
 		}
 
 		@Override
-		public void windowDeiconified(WindowEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowDeiconified(WindowEvent arg0) {}
 		@Override
-		public void windowIconified(WindowEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowIconified(WindowEvent arg0) {}
 		@Override
-		public void windowOpened(WindowEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
+		public void windowOpened(WindowEvent arg0) {}
 		
 	}
 	
-
 	private class AttackPreviewWindowListener implements WindowListener{
 
 		@Override
-		public void windowOpened(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowOpened(WindowEvent e) {}
 		@Override
-		public void windowClosing(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowClosing(WindowEvent e) {}
 		@Override
-		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowClosed(WindowEvent e) {}
 		@Override
-		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowIconified(WindowEvent e) {}
 		@Override
-		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowDeiconified(WindowEvent e) {}
 		@Override
-		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowActivated(WindowEvent e) {}
 		@Override
 		public void windowDeactivated(WindowEvent e) {
 			attackPreviewWindow.dispose();
@@ -1463,7 +1348,6 @@ public class RPGApp extends JFrame {
 		}
 		
 	}
-	
 	
 	private class ConfirmAttackButtonListener implements ActionListener{
 		
@@ -1632,41 +1516,17 @@ public class RPGApp extends JFrame {
 	private class AnimationWindowListener implements WindowListener{
 
 		@Override
-		public void windowOpened(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowOpened(WindowEvent e) {}
 		@Override
-		public void windowClosing(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowClosing(WindowEvent e) {}
 		@Override
-		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowClosed(WindowEvent e) {}
 		@Override
-		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowIconified(WindowEvent e) {}
 		@Override
-		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowDeiconified(WindowEvent e) {}
 		@Override
-		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
+		public void windowActivated(WindowEvent e) {}
 		@Override
 		public void windowDeactivated(WindowEvent e) {
 			animationWindow.dispose();
