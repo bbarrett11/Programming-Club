@@ -10,7 +10,7 @@ public class HelloWorld {
 		System.out.println("Hello World");
 		System.out.println("Hello World");
 		//hello?
-		System.out.println("Veenon was here");
+		System.out.println("I verified my email");
 		System.out.println("SEE MY WORDS BEN");
 		System.out.println(howToAddComments(1));
 	}
