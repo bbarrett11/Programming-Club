@@ -3,9 +3,10 @@ package RPG;
 import javax.swing.*;
 import java.io.*;
 
-public class Unit implements Serializable{
-	final String CHARACTER_ART_PATH = "Art\\"; //put before character name to get through the folders
-	
+public class Unit implements Serializable {
+	final String CHARACTER_ART_PATH = "Art\\"; // put before character name to
+												// get through the folders
+
 	public transient ImageIcon graphic;
 	public transient ImageIcon portrait;
 	public transient ImageIcon inactiveGraphic;
@@ -19,7 +20,7 @@ public class Unit implements Serializable{
 	public int allignment;
 	public boolean active = false;
 	public Equipment weapon;
-	
+
 	public int maxEnthusiasm;
 	public int enthusiasm;
 	public int state;
@@ -32,22 +33,22 @@ public class Unit implements Serializable{
 	public int avoidance;
 	public int bleedThreshold;
 	public int glory; // amount of hp recovered
-	public String battleCry;  //want an array, index corresponds to state
-	//level, exp, skills, buffs
-	
-	public Unit(String unitName, int allignmentInput){
+	public String battleCry; // want an array, index corresponds to state
+	// level, exp, skills, buffs
+
+	public Unit(String unitName, int allignmentInput) {
 		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
 		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + unitName + "Inactive.png");
 		portrait = new ImageIcon(CHARACTER_ART_PATH + unitName + "Portrait.png");
 		placed = false;
 		name = unitName;
 		moveRange = 6;
-		attackRange = new int[]{1};
+		attackRange = new int[] { 1 };
 		weapon = new Equipment("Fists");
 		allignment = allignmentInput;
 	}
-	
-	public Unit(String unitName, int allignmentInput, String weaponName){
+
+	public Unit(String unitName, int allignmentInput, String weaponName) {
 		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
 		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + unitName + "Inactive.png");
 		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + unitName + "Attack.gif");
@@ -58,7 +59,7 @@ public class Unit implements Serializable{
 		allignment = allignmentInput;
 		weapon = new Equipment(weaponName);
 		attackRange = weapon.getRange();
-		
+
 		maxEnthusiasm = 30;
 		enthusiasm = maxEnthusiasm;
 		state = 1;
@@ -67,16 +68,17 @@ public class Unit implements Serializable{
 		focus = maxFocus;
 		dilligence = 7;
 		strength = 3;
-		bleedThreshold = toughness/2 + 1;
+		bleedThreshold = toughness / 2 + 1;
 		glory = 2;
 		avoidance = 5;
 		speed = 5;
 		battleCry = "I will defeat you!";
-		
+
 	}
-	
-	public Unit(String unitName, String unitType, int allignmentInput, String weaponName, int maxEnthusiasmInput, int toughnessInput, int maxFocusInput,
-			int dilligenceInput, int strengthInput, int gloryInput, int avoidanceInput, int speedInput){
+
+	public Unit(String unitName, String unitType, int allignmentInput, String weaponName, int maxEnthusiasmInput,
+			int toughnessInput, int maxFocusInput, int dilligenceInput, int strengthInput, int gloryInput,
+			int avoidanceInput, int speedInput) {
 		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
 		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + "Inactive\\" + unitName + "Inactive.png");
 		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + unitName + "Attack.gif");
@@ -88,7 +90,7 @@ public class Unit implements Serializable{
 		allignment = allignmentInput;
 		weapon = new Equipment(weaponName);
 		attackRange = weapon.getRange();
-		
+
 		maxEnthusiasm = maxEnthusiasmInput;
 		enthusiasm = maxEnthusiasm;
 		state = 1;
@@ -97,84 +99,80 @@ public class Unit implements Serializable{
 		focus = maxFocus;
 		dilligence = dilligenceInput;
 		strength = strengthInput;
-		bleedThreshold = toughness/2 + 1;
+		bleedThreshold = toughness / 2 + 1;
 		glory = gloryInput;
 		avoidance = avoidanceInput;
 		speed = speedInput;
 		battleCry = "I will defeat you!";
-		
+
 	}
-	
-	public void findImages(){
+
+	public void findImages() {
 		graphic = new ImageIcon(CHARACTER_ART_PATH + type + "\\" + name + ".png");
 		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + "Inactive\\" + name + "Inactive.png");
 		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + name + "Attack.gif");
 		portrait = new ImageIcon(CHARACTER_ART_PATH + name + "Portrait.png");
 	}
-	
-	public void setPlaced(boolean input){
+
+	public void setPlaced(boolean input) {
 		placed = input;
 	}
-	
-	public void calculateState(){
-		double hpPercent = (double)enthusiasm / (double)maxEnthusiasm;
-		if(hpPercent>= .66){
+
+	public void calculateState() {
+		double hpPercent = (double) enthusiasm / (double) maxEnthusiasm;
+		if (hpPercent >= .66) {
 			state = 1;
-		}
-		else if(hpPercent>= .33){
+		} else if (hpPercent >= .33) {
 			state = 0;
-		}
-		else{
+		} else {
 			state = 2;
 		}
 	}
-	
-	private int calculateAttack(){
+
+	private int calculateAttack() {
 		calculateState();
-		
+
 		int totalDamage;
-		
+
 		totalDamage = strength + weapon.attack;
 		totalDamage *= Math.pow(1.3, state);
-		
+
 		return totalDamage;
 	}
-	
-	public int receiveAttack(Unit attacker, Tile space){
-		bleedThreshold = toughness/2 + 1;
+
+	public int receiveAttack(Unit attacker, Tile space) {
+		bleedThreshold = toughness / 2 + 1;
 		int damageReceived = attacker.calculateAttack() - toughness - space.defenseMod;
-		
-		if(damageReceived>bleedThreshold){
+
+		if (damageReceived > bleedThreshold) {
 			damageReceived *= 1.3;
 		}
-		
+
 		calculateState();
-		
+
 		return damageReceived;
 	}
-	
-	public void die(){
-		//save to file if no perma-death
+
+	public void die() {
+		// save to file if no perma-death
 		occupiedSpace.remove(this);
 	}
-	
-	public void equip(Equipment newWeapon){
+
+	public void equip(Equipment newWeapon) {
 		weapon = newWeapon;
 		attackRange = newWeapon.getRange();
 	}
-	
-	public void apply(Buff theBigCheese){
-		
+
+	public void apply(Buff theBigCheese) {
+
 	}
-	
-	public void expire(Buff smallerCheese){
-		
+
+	public void expire(Buff smallerCheese) {
+
 	}
-	
-	public ImageIcon createAttackAnimation(){
+
+	public ImageIcon createAttackAnimation() {
 		return new ImageIcon(CHARACTER_ART_PATH + name + "Attack.gif");
 	}
-	
-	
 
 }
