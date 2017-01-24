@@ -131,6 +131,7 @@ public class RPGApp extends JFrame {
 				checkMoveCamera();
 				buildVisibleGrid();
 				
+				
 				add(grid);
 				refreshGrid();
 				refresh();
@@ -168,7 +169,7 @@ public class RPGApp extends JFrame {
 			public void paintComponent(Graphics g)
 			{
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon("Art\\background_tiles\\misc\\780x700 tile background.png").getImage(), 5,5, null);
+				g.drawImage(new ImageIcon("Art\\background_tiles\\misc\\780x700 tile background.png").getImage(), 39*-startX+4,35*-startY+3, null);
 			}
 			public void update(Graphics g)
 			{
@@ -203,7 +204,7 @@ public class RPGApp extends JFrame {
 			public void paintComponent(Graphics g)
 			{
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon("Art\\Maps\\"+ "Test" + ".png").getImage(), 5,5, null);
+				g.drawImage(new ImageIcon("Art\\Maps\\"+ "Test" + ".png").getImage(), 39*-startX+4,35*-startY+3, null);
 			
 			}
 			public void update(Graphics g)
