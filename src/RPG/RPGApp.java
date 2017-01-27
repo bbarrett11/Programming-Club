@@ -7,6 +7,9 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
 
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
 import java.awt.*;
 import java.io.*;
 
@@ -95,6 +98,8 @@ public class RPGApp extends JFrame {
 												// .25 seconds will check to see
 												// if the screen has to move
 		scrollTimer.start();
+		
+		playBackGroundMusic("HonorMedley");
 	}
 
 	public void refreshGrid() {
@@ -126,20 +131,8 @@ public class RPGApp extends JFrame {
 										// visible grid starts to build from
 										// array
 			currentSize = 20; // how big the camera/visibleGrid will be
-	public boolean moveNorth = false, moveSouth = false, moveEast = false, moveWest = false; // tells
-																								// if
-																								// the
-																								// mouse
-																								// is
-																								// in
-																								// a
-																								// square
-																								// that
-																								// should
-																								// make
-																								// the
-																								// camera
-																								// move
+	public boolean moveNorth = false, moveSouth = false, moveEast = false, moveWest = false; 
+	// tells if the mouse is in a square that should make the camera move
 
 	/**
 	 * ActionListener that runs every .25 seconds on the scrollTimer
@@ -584,6 +577,45 @@ public class RPGApp extends JFrame {
 		defendUnit = null;
 	}
 
+	/**
+	 * Plays the given Background Song
+	 * @param s the name of the mp3 file in Sounds/Songs
+	 */
+	public void playBackGroundMusic(String s)
+	{
+		File file = new File("Sounds/Songs/"+s+".mp3");
+		try {
+			FileInputStream is = new FileInputStream(file);
+			BufferedInputStream bis = new BufferedInputStream(is);
+			Player player = new Player(bis);
+			player.play();
+			
+		} catch (FileNotFoundException | JavaLayerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * Plays the mp3 sound in Sounds/effects
+	 * @param s the name of the effect to be played
+	 */
+	public void playSoundEffect(String s)
+	{
+		File file = new File("Sounds/Effects/"+s+".mp3");
+		try {
+			FileInputStream is = new FileInputStream(file);
+			BufferedInputStream bis = new BufferedInputStream(is);
+			Player player = new Player(bis);
+			player.play();
+			
+		} catch (FileNotFoundException | JavaLayerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public class MouseListenerTest implements MouseListener {
 
 		@Override
@@ -591,18 +623,19 @@ public class RPGApp extends JFrame {
 			int x = 0;
 			int y = 0;
 			Tile temp = (Tile) arg0.getSource();
-			System.out.println(temp.getWidth());
-			System.out.println(temp.getHeight());
+			//System.out.println(temp.getWidth());
+			//System.out.println(temp.getHeight());
 			for (int n = 0; n < array.length; n++) {
 				for (int j = 0; j < array[n].length; j++) {
 					if (arg0.getSource().equals(array[n][j])) {
-						System.out.println("EUREKA " + n + "," + j);
+						//System.out.println("EUREKA " + n + "," + j);
 						x = n;
 						y = j;
 
 					}
 				}
 			}
+			
 			if (attackFound) {
 				if (temp.colorTile.canAttack) {
 					createAttackPreview(moveToTile.occupyingUnit, temp.occupyingUnit);
@@ -613,16 +646,25 @@ public class RPGApp extends JFrame {
 					movingUnit = temp.occupyingUnit;
 					moveFromTile = temp;
 					move(array, x, y, movingUnit.moveRange);
+					playSoundEffect("selectUnit"); 
+
 				}
 			} else if (!temp.colorTile.inMoveRange) {
 				cancelMove();
+				playSoundEffect("click"); 
+
 			} else {
 				moveFromTile.remove(movingUnit);
 				temp.place(movingUnit);
 				moveToTile = temp;
 				createActionMenu(temp, x, y);
 				cancelMove();
+				playSoundEffect("click"); 
 			}
+			if(!temp.occupied)				
+				playSoundEffect("click"); 
+
+			
 			refresh();
 
 		}
@@ -668,6 +710,7 @@ public class RPGApp extends JFrame {
 					}
 				}
 			}
+
 		}
 
 		public void checkAttack(Tile inputTile, int attackingAllignment, int attackRange) {
@@ -684,11 +727,7 @@ public class RPGApp extends JFrame {
 			}
 
 			if (attackRange != 0) {
-				if (x > 0 && x - movingUnit.occupiedSpace.xPos <= 0) { // go up
-																		// (because
-																		// x and
-																		// y are
-																		// switched)
+				if (x > 0 && x - movingUnit.occupiedSpace.xPos <= 0) { // go up (because x and y are switched)
 					if (attackRange > 0) {
 						checkAttack(array[x - 1][y], attackingAllignment, attackRange - 1);
 					} else {
