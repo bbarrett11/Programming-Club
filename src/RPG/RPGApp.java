@@ -646,12 +646,10 @@ public class RPGApp extends JFrame {
 					movingUnit = temp.occupyingUnit;
 					moveFromTile = temp;
 					move(array, x, y, movingUnit.moveRange);
-					playSoundEffect("selectUnit"); 
 
 				}
 			} else if (!temp.colorTile.inMoveRange) {
 				cancelMove();
-				playSoundEffect("click"); 
 
 			} else {
 				moveFromTile.remove(movingUnit);
@@ -659,13 +657,14 @@ public class RPGApp extends JFrame {
 				moveToTile = temp;
 				createActionMenu(temp, x, y);
 				cancelMove();
-				playSoundEffect("click"); 
 			}
-			if(!temp.occupied)				
-				playSoundEffect("click"); 
-
+			if(temp.occupied)
+				playSoundEffect("selectUnit");
+			else
+				playSoundEffect("click");
 			
 			refresh();
+			
 
 		}
 
