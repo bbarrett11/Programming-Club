@@ -72,6 +72,7 @@ public class RPGApp extends JFrame {
 
 	}
 
+	String levelName;
 	public RPGApp(String levelName) throws Exception {
 		UIManager.put("Label.font", new Font("Garamond", Font.BOLD, 14));
 
@@ -84,7 +85,9 @@ public class RPGApp extends JFrame {
 		roster.add(elLady);
 		roster.add(christmasNinja);
 
+		this.levelName = levelName;
 		buildGrid(levelName);
+		
 		add(grid);
 		characterDetailPanel = new JPanel();
 		characterDetailPanel.setLayout(new BorderLayout());
@@ -209,9 +212,9 @@ public class RPGApp extends JFrame {
 	}
 
 	private int unfilledSpawns = 0;
-
-	private void buildGrid(String levelName) throws Exception {
-		System.out.println(array.length);
+	
+	private void buildGrid(String levelNamed) throws Exception {
+		//System.out.println(array.length);
 
 		grid = new JPanel() {
 
