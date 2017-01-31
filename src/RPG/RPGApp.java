@@ -217,7 +217,7 @@ public class RPGApp extends JFrame {
 
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon("Art\\Maps\\" + "Test" + ".png").getImage(), 39 * -startX + 4,
+				g.drawImage(new ImageIcon("Art\\Maps\\" + levelName + ".png").getImage(), 39 * -startX + 4,
 						35 * -startY + 3, null);
 
 			}
