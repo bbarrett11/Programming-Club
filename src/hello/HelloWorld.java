@@ -12,6 +12,7 @@ public class HelloWorld {
 		System.out.println("hi vernon");
 		System.out.println("I verified my email");
 		System.out.println("SEE MY WORDS BEN");
+		System.out.println("test");
 		System.out.println(howToAddComments(1));
 	}
 
