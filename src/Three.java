@@ -56,7 +56,7 @@ public class Three extends JFrame{
 		fourthSet.add(attackAnimation);
 		
 		setSize(200,200);
-		Image scaledImage = createResizedImage();
+		final Image scaledImage = createResizedImage();
 		
 		fifthSet = new JPanel();
 		

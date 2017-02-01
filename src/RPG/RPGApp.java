@@ -91,12 +91,13 @@ public class RPGApp extends JFrame {
 		add(grid);
 		characterDetailPanel = new JPanel();
 		characterDetailPanel.setLayout(new BorderLayout());
-
+		
 		setVisible(true);
 
 		// refreshGrid();
 		add(characterDetailPanel);
-
+		
+		addKeyListener(new Zoom());
 		scrollTimer = new Timer(250, Scroll); // start the Scroll timer, every
 												// .25 seconds will check to see
 												// if the screen has to move
@@ -197,6 +198,7 @@ public class RPGApp extends JFrame {
 			for (int j = 0; j < array[n].length; j++) {
 				array[n][j] = new Tile(n, j, 0);
 				array[n][j].addMouseListener(new MouseListenerTest());
+				
 				if (j == array[n].length - 1) {
 					// array[n][j].addMouseListener(new
 					// ScrollRightMouseListener());
@@ -220,8 +222,8 @@ public class RPGApp extends JFrame {
 
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon("Art\\Maps\\" + levelName + ".png").getImage(), 39 * -startX + 4,
-						35 * -startY + 3, null);
+				g.drawImage(new ImageIcon("Art\\Maps\\" + levelName + ".png").getImage(), array[0][0].getWidth() * -startX + 4,
+						array[0][0].getHeight() * -startY + 3, null);
 
 			}
 
@@ -280,7 +282,7 @@ public class RPGApp extends JFrame {
 
 			System.out.println("Unfilled Spawns: " + unfilledSpawns);
 		}
-
+		
 		reader.close();
 		buildVisibleGrid();
 
@@ -619,7 +621,7 @@ public class RPGApp extends JFrame {
 		}
 	}
 	
-	public class MouseListenerTest implements MouseListener {
+	public class MouseListenerTest implements MouseListener,MouseWheelListener {
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
@@ -1087,6 +1089,13 @@ public class RPGApp extends JFrame {
 					getY() + attackingUnit.occupiedSpace.getY());
 			attackPreviewWindow.setVisible(true);
 
+		}
+
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e) {
+			
+			System.out.println(e.getPreciseWheelRotation());
+			
 		}
 
 	}
@@ -1657,6 +1666,39 @@ public class RPGApp extends JFrame {
 
 	}
 
+	
+	private class Zoom implements KeyListener
+	{
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			System.out.println(e.getKeyChar());
+			if(e.getKeyChar() == '-')
+				Zoom(currentSize+1);
+			
+			if(e.getKeyChar() == '+')
+				Zoom(currentSize-1);
+		}
+		
+	}
+
+	public void Zoom(int n)
+	{
+		currentSize = n;
+		
+	}
 	public void kill(Unit deadGuy) {
 		if (p1Units.contains(deadGuy)) {
 			p1Units.remove(deadGuy);
