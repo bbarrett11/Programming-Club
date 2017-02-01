@@ -1,8 +1,10 @@
 package RPG;
 
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
@@ -214,6 +216,7 @@ public class RPGApp extends JFrame {
 	}
 
 	private int unfilledSpawns = 0;
+	Image mapImage;
 	
 	private void buildGrid(String levelNamed) throws Exception {
 		//System.out.println(array.length);
@@ -222,11 +225,20 @@ public class RPGApp extends JFrame {
 
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon("Art\\Maps\\" + levelName + ".png").getImage(), array[0][0].getWidth() * -startX + 4,
+				
+				try {
+					mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[0][0].getWidth(), 
+							array[0].length*array[0][0].getHeight());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				g.drawImage(mapImage, array[0][0].getWidth() * -startX + 4,
 						array[0][0].getHeight() * -startY + 3, null);
 
 			}
 
+			//new ImageIcon("Art\\Maps\\" + levelName + "" + ".png").getImage()
+			
 			public void update(Graphics g) {
 				paint(g);
 			}
@@ -289,6 +301,26 @@ public class RPGApp extends JFrame {
 		repaint();
 	}
 
+	
+	
+	public Image resizeImage(String imageName, int width, int height) throws Exception{
+		int scaledWidth = width;
+		int scaledHeight = height;
+		
+		File inputFile = new File(imageName + ".png");
+		BufferedImage inputImage = ImageIO.read(inputFile);
+		
+		BufferedImage outputImage = new BufferedImage(scaledWidth, scaledHeight, inputImage.getType());
+		
+		Graphics2D g2d = outputImage.createGraphics();
+        g2d.drawImage(inputImage, 0, 0, scaledWidth, scaledHeight, null);
+        g2d.dispose();
+        
+        ImageIO.write(outputImage, "png", new File(imageName + "Resize.png"));
+        
+		return outputImage;
+	}
+	
 	/**
 	 * Builds the grid/camera
 	 */
