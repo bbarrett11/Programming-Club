@@ -306,7 +306,7 @@ public class RPGApp extends JFrame {
 	public Image resizeImage(String imageName, int width, int height) throws Exception{
 		int scaledWidth = width;
 		int scaledHeight = height;
-		
+		//
 		File inputFile = new File(imageName + ".png");
 		BufferedImage inputImage = ImageIO.read(inputFile);
 		
