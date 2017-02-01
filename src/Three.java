@@ -96,7 +96,7 @@ public class Three extends JFrame{
 		int scaledWidth = 20;
 		int scaledHeight = 70;
 		
-		File inputFile = new File("Test.png");
+		File inputFile = new File("Art\\Maps\\Test.png");
 		BufferedImage inputImage = ImageIO.read(inputFile);
 		
 		BufferedImage outputImage = new BufferedImage(scaledWidth, scaledHeight, inputImage.getType());
