@@ -1720,8 +1720,8 @@ public class RPGApp extends JFrame {
 				Zoom(currentSize-1);
 			
 			try {
-				mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[0][0].getWidth(), 
-						array[0].length*array[0][0].getHeight());
+				mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[startY][startX].getWidth(), 
+						array[0].length*array[startY][startX].getHeight());
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
