@@ -88,6 +88,7 @@ public class RPGApp extends JFrame {
 		roster.add(christmasNinja);
 
 		this.levelName = levelName;
+		mapImage = new ImageIcon("Art\\Maps\\" + levelName + ".png").getImage();
 		buildGrid(levelName);
 		
 		add(grid);
@@ -104,6 +105,9 @@ public class RPGApp extends JFrame {
 												// .25 seconds will check to see
 												// if the screen has to move
 		scrollTimer.start();
+		
+		mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[0][0].getWidth(), 
+				array[0].length*array[0][0].getHeight());
 		
 		playBackGroundMusic("HonorMedley");
 	}
@@ -226,18 +230,10 @@ public class RPGApp extends JFrame {
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				
-				try {
-					mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[0][0].getWidth(), 
-							array[0].length*array[0][0].getHeight());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 				g.drawImage(mapImage, array[0][0].getWidth() * -startX + 4,
 						array[0][0].getHeight() * -startY + 3, null);
 
 			}
-
-			//new ImageIcon("Art\\Maps\\" + levelName + "" + ".png").getImage()
 			
 			public void update(Graphics g) {
 				paint(g);
@@ -1722,6 +1718,14 @@ public class RPGApp extends JFrame {
 			
 			if(e.getKeyChar() == '+')
 				Zoom(currentSize-1);
+			
+			try {
+				mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[0][0].getWidth(), 
+						array[0].length*array[0][0].getHeight());
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 	}
