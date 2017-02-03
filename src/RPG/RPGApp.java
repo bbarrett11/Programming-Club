@@ -191,8 +191,8 @@ public class RPGApp extends JFrame {
 
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(new ImageIcon("Art\\background_tiles\\misc\\780x700 tile background.png").getImage(),
-						39 * -startX + 4, 35 * -startY + 3, null);
+				g.drawImage(mapImage, array[startY][startX].getWidth() * -startX + 4,
+						array[startY][startX].getHeight() * -startY + 3, null);
 			}
 
 			public void update(Graphics g) {
