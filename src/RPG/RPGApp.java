@@ -159,14 +159,14 @@ public class RPGApp extends JFrame {
 			refreshGrid();
 			refresh();
 			invalidate();
-			
+		/*	
 			try {
 				mapImage = resizeImage("Art\\Maps\\" + levelName, (array[0].length) * array[startY][startX].getWidth(), 
 						array.length*array[startY][startX].getHeight());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			
+		*/	
 			validate();		//Validation may need to happen after image is resized
 
 		}
@@ -199,8 +199,9 @@ public class RPGApp extends JFrame {
 
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(mapImage, array[startY][startX].getWidth() * -startX + 4,
-						array[startY][startX].getHeight() * -startY + 3, null);
+				g.drawImage(mapImage, array[startY][startX].getWidth() * -startX + array[startY][startX].getWidth()/10,
+						array[startY][startX].getHeight() * -startY + array[startY][startX].getHeight()/10, null);
+				
 			}
 
 			public void update(Graphics g) {
@@ -238,8 +239,15 @@ public class RPGApp extends JFrame {
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				
-				g.drawImage(mapImage, array[0][0].getWidth() * -startX + 4,
-						array[0][0].getHeight() * -startY + 3, null);
+				//g.drawImage(mapImage, array[0][0].getWidth() * -startX + 4,
+				//		array[0][0].getHeight() * -startY + 3, null);
+				
+			//	System.out.println("HEYO");
+				
+				g.drawImage(mapImage, array[startY][startX].getWidth() * -startX + array[startY][startX].getWidth()/10,
+						array[startY][startX].getHeight() * -startY + array[startY][startX].getHeight()/10,
+						array[0].length * array[startY][startX].getWidth(), 
+						array.length * array[startY][startX].getHeight(), null);
 
 			}
 			
@@ -441,6 +449,7 @@ public class RPGApp extends JFrame {
 				array[n][j].updateUI();
 			}
 		}
+		
 	}
 
 	public class SpawnListener implements KeyListener {
