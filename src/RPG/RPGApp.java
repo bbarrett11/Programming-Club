@@ -153,7 +153,7 @@ public class RPGApp extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// System.out.println("scroll" + startX + " "+startY);
 			checkMoveCamera();
-			buildVisibleGrid();
+			buildVisibleGrid(startX, startY);
 
 			add(grid);
 			refreshGrid();
@@ -214,7 +214,7 @@ public class RPGApp extends JFrame {
 				// grid.add(array[n][j]);
 			}
 		}
-		buildVisibleGrid();
+		buildVisibleGrid(startX, startY);
 
 		repaint();
 	}
@@ -292,7 +292,7 @@ public class RPGApp extends JFrame {
 		}
 		
 		reader.close();
-		buildVisibleGrid();
+		buildVisibleGrid(startX, startY);
 
 		repaint();
 	}
@@ -320,7 +320,7 @@ public class RPGApp extends JFrame {
 	/**
 	 * Builds the grid/camera
 	 */
-	public void buildVisibleGrid() {
+	public void buildVisibleGrid(int x, int y) {
 		grid.removeAll();
 
 		if (currentSize > array.length) { // this will be relevant if we can get
@@ -333,8 +333,8 @@ public class RPGApp extends JFrame {
 
 		grid.setLayout(new GridLayout(currentSize, currentSize));
 
-		for (int i = startY; i < currentSize + startY; i++)
-			for (int h = startX; h < currentSize + startX; h++)
+		for (int i = y; i < currentSize + y; i++)
+			for (int h = x; h < currentSize + x; h++)
 				grid.add(array[i][h]);
 
 	}
@@ -1697,6 +1697,22 @@ public class RPGApp extends JFrame {
 	
 	private class Zoom implements KeyListener
 	{
+		
+		private ActionListener ZoomFixItListener = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				try {
+					mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[startY][startX].getWidth(), 
+							array[0].length*array[startY][startX].getHeight());
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				
+				zoomCorrectionTimer.stop();
+			}
+			
+		};
+		
+		private Timer zoomCorrectionTimer = new Timer(200, ZoomFixItListener);
 
 		@Override
 		public void keyPressed(KeyEvent e) {
@@ -1709,7 +1725,7 @@ public class RPGApp extends JFrame {
 			// TODO Auto-generated method stub
 			
 		}
-
+		
 		@Override
 		public void keyTyped(KeyEvent e) {
 			System.out.println(e.getKeyChar());
@@ -1718,14 +1734,20 @@ public class RPGApp extends JFrame {
 			
 			if(e.getKeyChar() == '+')
 				Zoom(currentSize-1);
+					
 			
 			try {
-				mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[startY][startX].getWidth(), 
+				mapImage = resizeImage("Art\\Maps\\" + levelName, (array.length) * array[startY][startX].getWidth(), 
 						array[0].length*array[startY][startX].getHeight());
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
+			buildVisibleGrid(0,0);
+			buildVisibleGrid(startX, startY);
+			
+			
+		//	zoomCorrectionTimer.start();
 		}
 		
 	}
