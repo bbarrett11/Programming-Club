@@ -1715,22 +1715,6 @@ public class RPGApp extends JFrame {
 	private class Zoom implements KeyListener
 	{
 		
-		private ActionListener ZoomFixItListener = new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				try {
-					mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[startY][startX].getWidth(), 
-							array[0].length*array[startY][startX].getHeight());
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				
-				zoomCorrectionTimer.stop();
-			}
-			
-		};
-		
-		private Timer zoomCorrectionTimer = new Timer(200, ZoomFixItListener);
-
 		@Override
 		public void keyPressed(KeyEvent e) {
 			// TODO Auto-generated method stub
@@ -1752,7 +1736,7 @@ public class RPGApp extends JFrame {
 			if(e.getKeyChar() == '+')
 				Zoom(currentSize-1);
 					
-			
+		/*	
 			try {
 				mapImage = resizeImage("Art\\Maps\\" + levelName, (array[0].length) * array[startY][startX].getWidth(), 
 						array.length*array[startY][startX].getHeight());
@@ -1762,9 +1746,7 @@ public class RPGApp extends JFrame {
 			
 			buildVisibleGrid(0,0);
 			buildVisibleGrid(startX, startY);
-			
-			
-		//	zoomCorrectionTimer.start();
+		*/			
 		}
 		
 	}
