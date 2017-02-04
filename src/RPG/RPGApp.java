@@ -159,7 +159,15 @@ public class RPGApp extends JFrame {
 			refreshGrid();
 			refresh();
 			invalidate();
-			validate();
+			
+			try {
+				mapImage = resizeImage("Art\\Maps\\" + levelName, (array[0].length) * array[startY][startX].getWidth(), 
+						array.length*array[startY][startX].getHeight());
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+			validate();		//Validation may need to happen after image is resized
 
 		}
 	};
@@ -1737,8 +1745,8 @@ public class RPGApp extends JFrame {
 					
 			
 			try {
-				mapImage = resizeImage("Art\\Maps\\" + levelName, (array.length) * array[startY][startX].getWidth(), 
-						array[0].length*array[startY][startX].getHeight());
+				mapImage = resizeImage("Art\\Maps\\" + levelName, (array[0].length) * array[startY][startX].getWidth(), 
+						array.length*array[startY][startX].getHeight());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
