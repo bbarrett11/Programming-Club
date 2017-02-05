@@ -1711,7 +1711,12 @@ public class RPGApp extends JFrame {
 
 	}
 
-	
+	/**
+	 * KeyListener Method whose only current purpose is to listen for + or -
+	 * to zoom 
+	 * @author BarrettB
+	 *
+	 */
 	private class Zoom implements KeyListener
 	{
 		
@@ -1729,10 +1734,15 @@ public class RPGApp extends JFrame {
 		
 		@Override
 		public void keyTyped(KeyEvent e) {
-			System.out.println(e.getKeyChar());
+			//System.out.println(e.getKeyChar());
 			if(e.getKeyChar() == '-')
+			{
 				Zoom(currentSize+1);
-			
+				if(startX != 0)
+					startX--;
+				if(startY!=0)
+					startY--;
+			}
 			if(e.getKeyChar() == '+')
 				Zoom(currentSize-1);
 					
