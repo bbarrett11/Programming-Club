@@ -81,6 +81,7 @@ public class RPGApp extends JFrame {
 		setTitle(levelName);
 		setSize(1000, 750);
 		setResizable(false);
+		setBackground(Color.BLACK);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		roster.add(senorSavesTheDay);
@@ -242,12 +243,14 @@ public class RPGApp extends JFrame {
 						array.length * array[startY][startX].getHeight(), null);
 
 			}
-			
+						
 			public void update(Graphics g) {
 				paint(g);
 			}
 
 		};
+		
+		grid.setBackground(Color.BLACK);
 
 		File initializer = new File("Levels\\" + levelName + ".txt");
 		Scanner reader = new Scanner(initializer);
