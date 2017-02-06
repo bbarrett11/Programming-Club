@@ -236,8 +236,8 @@ public class RPGApp extends JFrame {
 				
 			//	System.out.println("HEYO");
 				
-				g.drawImage(mapImage, array[startY][startX].getWidth() * -startX + 4,
-						array[startY][startX].getHeight() * -startY + 3,
+				g.drawImage(mapImage, array[startY][startX].getWidth() * -startX + array[startY][startX].getX(),
+						array[startY][startX].getHeight() * -startY + array[startY][startX].getY(),
 						array[0].length * array[startY][startX].getWidth(), 
 						array.length * array[startY][startX].getHeight(), null);
 
