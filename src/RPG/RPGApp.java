@@ -72,6 +72,11 @@ public class RPGApp extends JFrame {
 												// if the screen has to move
 		scrollTimer.start();
 
+		musicTimer = new Timer(200, music); // start the music timer, every
+		// .2 seconds will check to see
+		// if have to play sound
+musicTimer.start();
+
 	}
 
 	String levelName;
@@ -107,10 +112,15 @@ public class RPGApp extends JFrame {
 												// if the screen has to move
 		scrollTimer.start();
 		
+		musicTimer = new Timer(1, music); // start the music timer, every
+		// .2 seconds will check to see
+		// if have to play sound
+		musicTimer.start();
+		
 		mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[0][0].getWidth(), 
 				array[0].length*array[0][0].getHeight());
 		
-		playBackGroundMusic("HonorMedley");
+		//playBackGroundMusic("HonorMedley");
 	}
 
 	public void refreshGrid() {
@@ -622,6 +632,23 @@ public class RPGApp extends JFrame {
 		defendUnit = null;
 	}
 
+	String musicPath = "";
+	Timer musicTimer;
+	/**
+	 * ActionListener that listens to see if the musicPath has changed to something
+	 */
+	ActionListener music = new ActionListener()
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			if(!musicPath.isEmpty())
+			{
+				playSoundEffect(musicPath);
+				musicPath = "";
+			}
+		}
+	};
+	
 	/**
 	 * Plays the given Background Song
 	 * @param s the name of the mp3 file in Sounds/Songs
@@ -704,9 +731,9 @@ public class RPGApp extends JFrame {
 				cancelMove();
 			}
 			if(temp.occupied)
-				playSoundEffect("selectUnit");
+				musicPath = "selectUnit";
 			else
-				playSoundEffect("click");
+				musicPath = "click";
 			
 			refresh();
 			
