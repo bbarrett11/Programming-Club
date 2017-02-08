@@ -11,7 +11,7 @@ public class TitleScreen extends JFrame{
 		setSize(500,500);
 		setVisible(true);
 		JPanel allEncompasingPanel = new JPanel(){
-			//have paintComponent use whatever image we have for background
+			//have paintComponent use whatever image we have for background 
 		};
 		allEncompasingPanel.setLayout(new BorderLayout());
 		JLabel titleLabel = new JLabel();
