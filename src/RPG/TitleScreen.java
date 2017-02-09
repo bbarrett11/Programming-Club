@@ -61,14 +61,8 @@ public class TitleScreen extends JFrame{
 	public static void main(String[] args) throws FileNotFoundException{
 		TitleScreen beginApp = new TitleScreen();
 	}
-	/*
-	 * File f = new File("HEYO\\whatsGud");
-		f.mkdirs();
-		PrintWriter pw = new PrintWriter("HEYO\\whatsGud\\live.txt");
-		pw.print("Still here!");
-		pw.close();
-		f.mkdirs();
-	 */
+	
+	
 	JPanel createFilePanel;
 	JButton returnButton;
 	JButton createFileButton;
@@ -111,11 +105,9 @@ public class TitleScreen extends JFrame{
 			}
 			else if(text.equals("Return")){
 				setVisible(false);
-				removeAll();
+				getContentPane().removeAll();
 				buildMenu();
 				add(allEncompasingPanel);
-				invalidate();
-				validate();
 				setVisible(true);
 			}
 			
@@ -142,6 +134,7 @@ public class TitleScreen extends JFrame{
 	
 	private void toMap(){
 		// makes map panel, replaces it, etc.
+		getContentPane().removeAll();
 	}
 	
 }
