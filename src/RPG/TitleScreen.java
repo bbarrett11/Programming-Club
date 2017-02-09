@@ -66,6 +66,7 @@ public class TitleScreen extends JFrame{
 	JPanel createFilePanel;
 	JButton returnButton;
 	JButton createFileButton;
+	JTextField fileNameInput;
 	
 	private class MenuButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
@@ -73,9 +74,9 @@ public class TitleScreen extends JFrame{
 			System.out.println(text);
 			returnButton = new JButton("Return");
 			returnButton.addActionListener(new MenuButtonListener());
-			JTextField fileNameInput = new JTextField(15);
 			
 			if(text.equals("New Game")){
+				fileNameInput = new JTextField(15);
 				createFilePanel = new JPanel(){
 					//paintComponent set to whatever background we want
 				};
@@ -112,9 +113,22 @@ public class TitleScreen extends JFrame{
 			}
 			
 			else if(text.equals("Create File")){
+				String txt = fileNameInput.getText();
+				System.out.println("Start" + txt);
 				
-				File f = new File("Saves\\" + fileNameInput.getText() + "\\Roster");
+				File f = new File("Saves\\" + fileNameInput.getText());
+				System.out.println("1" + fileNameInput.getText());
+
 				f.mkdirs();
+				System.out.println("2");
+
+				f = new File("Saves\\" + fileNameInput.getText() + "\\Roster");
+				System.out.println("3");
+
+				f.mkdirs();
+				System.out.println("4");
+
+
 				PrintWriter pw;
 				try {
 					pw = new PrintWriter("Saves\\" + fileNameInput.getText() + "\\AvailableLevels.txt");
@@ -125,11 +139,50 @@ public class TitleScreen extends JFrame{
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
-				
+				System.out.println("5");
+
 				toMap();
-				
+				System.out.println("6");
+
 			}
 		}
+	
+		private class Test implements MouseListener{
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JTextField temp = (JTextField) e.getSource();
+				System.out.println(temp.getText());
+				temp.setText("Changed");
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
+		
 	}
 	
 	private void toMap(){
