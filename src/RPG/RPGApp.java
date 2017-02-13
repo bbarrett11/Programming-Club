@@ -131,15 +131,14 @@ musicTimer.start();
 		layout.putConstraint(SpringLayout.EAST, grid, this.getWidth() - grid.getWidth() / 16 - 146, SpringLayout.WEST,
 				this);
 		layout.putConstraint(SpringLayout.NORTH, grid, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.SOUTH, grid, this.getHeight() - grid.getHeight() / 16, SpringLayout.SOUTH,
+		layout.putConstraint(SpringLayout.SOUTH, grid, this.getHeight() - grid.getHeight() / 13, SpringLayout.SOUTH,
 				this);
 
 		layout.putConstraint(SpringLayout.WEST, characterDetailPanel, 0, SpringLayout.EAST, grid);
 		layout.putConstraint(SpringLayout.EAST, characterDetailPanel, this.getWidth(), SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, characterDetailPanel, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.SOUTH, characterDetailPanel, this.getHeight() - grid.getHeight() / 16,
+		layout.putConstraint(SpringLayout.SOUTH, characterDetailPanel, this.getHeight() - grid.getHeight() / 13,
 				SpringLayout.SOUTH, this);
-
 		setLayout(layout);
 		add(grid);
 
