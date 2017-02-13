@@ -2,12 +2,15 @@ package RPG;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class TitleScreen extends JFrame{
 	
 	public final String GAME_NAME = "GAME NAME: Subtitle";
+	
+	public ArrayList<Unit> roster = new ArrayList<Unit>();
 	
 	JPanel allEncompasingPanel;
 	JLabel titleLabel;
@@ -96,7 +99,16 @@ public class TitleScreen extends JFrame{
 				setVisible(true);
 			}
 			else if(text.equals("Continue")){
-				
+				File savesFolder = new File("Saves");
+				File[] listOfFiles = savesFolder.listFiles();
+
+			    for (int i = 0; i < listOfFiles.length; i++) {
+			      if (listOfFiles[i].isFile()) {
+			        System.out.println("File " + listOfFiles[i].getName());
+			      } else if (listOfFiles[i].isDirectory()) {
+			        System.out.println("Directory " + listOfFiles[i].getName());
+			      }
+			    }
 			}
 			else if(text.equals("Settings")){
 				
@@ -147,47 +159,14 @@ public class TitleScreen extends JFrame{
 			}
 		}
 	
-		private class Test implements MouseListener{
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				JTextField temp = (JTextField) e.getSource();
-				System.out.println(temp.getText());
-				temp.setText("Changed");
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		}
 		
 	}
 	
 	private void toMap(){
 		// makes map panel, replaces it, etc.
+		setVisible(false);
 		getContentPane().removeAll();
+		setVisible(true);
 	}
 	
 }
