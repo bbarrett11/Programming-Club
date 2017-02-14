@@ -21,9 +21,10 @@ public class Tile extends JPanel {
 	public Unit occupyingUnit;
 
 	public Tile colorTile;
+	SpringLayout layout;
 
 	public Tile() {
-		SpringLayout layout = new SpringLayout();
+		layout = new SpringLayout();
 
 		occupied = false;
 		inMoveRange = false;
@@ -51,7 +52,7 @@ public class Tile extends JPanel {
 		xPos = x;
 		yPos = y;
 
-		SpringLayout layout = new SpringLayout();
+		layout = new SpringLayout();
 
 		occupied = false;
 		inMoveRange = false;
@@ -81,10 +82,21 @@ public class Tile extends JPanel {
 		setOpaque(false);
 	}
 
-	public void updateIcon() {
+	public void updateIcon(boolean down) {
 		if (occupied) {
+			remove(character);
 			if (occupyingUnit.active) {
 				character = new JLabel(occupyingUnit.graphic);
+				if(!down)
+				{
+					layout.putConstraint(SpringLayout.NORTH, character, 7, SpringLayout.NORTH, this);
+					setLayout(layout);
+				}
+				else
+				{
+					layout.putConstraint(SpringLayout.NORTH, character, 0, SpringLayout.NORTH, this);
+					setLayout(layout);
+				}
 				add(character);
 			} else {
 				character = new JLabel(occupyingUnit.inactiveGraphic);
