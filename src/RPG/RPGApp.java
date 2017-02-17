@@ -412,26 +412,26 @@ musicTimer.start();
 		characterDetailPanel.updateUI();
 	}
 
+	public int playerTurn = 1;
+	
 	public void beginTurn(int playerNumber) {
 		if (playerNumber == 1) {
 			for (int n = 0; n < p1Units.size(); n++) {
 				p1Units.get(n).active = true;
 			}
+			for (int n = 0; n < p2Units.size(); n++) {
+				p2Units.get(n).active = false;
+			}
 		} else if (playerNumber == 2) {
 			for (int n = 0; n < p2Units.size(); n++) {
 				p2Units.get(n).active = true;
 			}
-		}
-		for (int n = 0; n < array.length; n++) {
-			for (int j = 0; j < array[n].length; j++) {
-				if (array[n][j].occupied) {
-					Unit temp = array[n][j].occupyingUnit;
-					array[n][j].remove(temp);
-					array[n][j].place(temp);
-				}
+			for (int n = 0; n < p1Units.size(); n++) {
+				p1Units.get(n).active = false;
 			}
 		}
-
+	
+		playerTurn = playerNumber;
 		JOptionPane.showMessageDialog(null, "Player " + playerNumber + " turn");
 
 		for (int n = 0; n < array.length; n++) {

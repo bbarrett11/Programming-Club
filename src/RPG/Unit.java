@@ -17,12 +17,12 @@ public class Unit implements Serializable {
 	public String type;
 	public int moveRange;
 	public int[] attackRange;
-	public int allignment;
+	public int allignment; //team
 	public boolean active = false;
 	public Equipment weapon;
 
-	public int maxEnthusiasm;
-	public int enthusiasm;
+	public int maxEnthusiasm; //max health
+	public int enthusiasm; //current health
 	public int state;
 	public int toughness;
 	public int maxFocus;
