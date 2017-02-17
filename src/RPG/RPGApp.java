@@ -117,6 +117,9 @@ musicTimer.start();
 		// if have to play sound
 		musicTimer.start();
 		
+		animateTimer.start();
+
+		
 		mapImage = resizeImage("Art\\Maps\\" + levelName, array.length * array[0][0].getWidth(), 
 				array[0].length*array[0][0].getHeight());
 		
@@ -131,15 +134,14 @@ musicTimer.start();
 		layout.putConstraint(SpringLayout.EAST, grid, this.getWidth() - grid.getWidth() / 16 - 146, SpringLayout.WEST,
 				this);
 		layout.putConstraint(SpringLayout.NORTH, grid, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.SOUTH, grid, this.getHeight() - grid.getHeight() / 16, SpringLayout.SOUTH,
+		layout.putConstraint(SpringLayout.SOUTH, grid, this.getHeight() - grid.getHeight() / 13, SpringLayout.SOUTH,
 				this);
 
 		layout.putConstraint(SpringLayout.WEST, characterDetailPanel, 0, SpringLayout.EAST, grid);
 		layout.putConstraint(SpringLayout.EAST, characterDetailPanel, this.getWidth(), SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, characterDetailPanel, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.SOUTH, characterDetailPanel, this.getHeight() - grid.getHeight() / 16,
+		layout.putConstraint(SpringLayout.SOUTH, characterDetailPanel, this.getHeight() - grid.getHeight() / 13,
 				SpringLayout.SOUTH, this);
-
 		setLayout(layout);
 		add(grid);
 
@@ -688,6 +690,27 @@ musicTimer.start();
 		}
 	}
 	
+	Tile animateTile;
+	boolean shouldAnimate=false;
+	/**
+	 * Listener sees if a character is being hovered over, and then makes it bounce
+	 */
+	ActionListener animateList = new ActionListener()
+	{
+
+		public void actionPerformed(ActionEvent arg0) {
+			if(animateTile!=null)
+			{
+			animateTile.updateIcon(shouldAnimate);
+			shouldAnimate = !shouldAnimate;
+			animateTile.updateUI();
+			}
+		}
+		
+	};
+	
+	Timer animateTimer = new Timer(200,animateList);
+		
 	public class MouseListenerTest implements MouseListener,MouseWheelListener {
 
 		@Override
@@ -841,6 +864,14 @@ musicTimer.start();
 
 		public void mouseEntered(MouseEvent e) {
 			Tile temp = (Tile) e.getSource();
+			if(shouldAnimate)
+			{
+				animateTile.updateIcon(shouldAnimate);
+				shouldAnimate = !shouldAnimate;
+				animateTile.updateUI();
+			}
+			animateTile = temp;
+			
 			if (temp.occupied && !actionMenuOpen && !attackFound) {
 				buildCharacterDetailPanel(temp);
 				// createAggressivePortraitWindow(temp, temp.occupyingUnit);
