@@ -33,10 +33,10 @@ public class RPGApp extends JFrame {
 		RPGApp start = new RPGApp("Test");
 	}
 
-	Unit senorSavesTheDay = new Unit("SenorSavesTheDay", 0, "swordIron Sword");
-	Unit pizzaJew = new Unit("PizzaJew", 1, "Fists");
-	Unit elLady = new Unit("ElLady", 0, "bowCrappy Bow");
-	Unit christmasNinja = new Unit("ChristmasNinja", 0, "throwThrowing Knives");
+	Unit senorSavesTheDay = new Unit("SenorSavesTheDay", 0, "Sword: Senor's Sword");
+	Unit pizzaJew = new Unit("PizzaJew", 1, "Fists:Hands");
+	Unit elLady = new Unit("ElLady", 0, "Long-Bow: El Lady's Long-Bow");
+	Unit christmasNinja = new Unit("ChristmasNinja", 0, "Shuriken: Christmas Ninaja's Shuriken");
 	SpringLayout layout;
 
 	public void myAttackWillRainDownFromTheSky() {
@@ -710,7 +710,7 @@ musicTimer.start();
 	};
 	
 	Timer animateTimer = new Timer(200,animateList);
-		
+	
 	public class MouseListenerTest implements MouseListener,MouseWheelListener {
 
 		@Override
@@ -730,7 +730,6 @@ musicTimer.start();
 					}
 				}
 			}
-			
 			if (attackFound) {
 				if (temp.colorTile.canAttack) {
 					createAttackPreview(moveToTile.occupyingUnit, temp.occupyingUnit);
@@ -1009,6 +1008,9 @@ musicTimer.start();
 		}
 
 		public void createAttackPreview(Unit attackingUnit, Unit defendingUnit) {
+			int distance = Math.abs(attackingUnit.occupiedSpace.xPos-defendingUnit.occupiedSpace.xPos)+
+					Math.abs(attackingUnit.occupiedSpace.yPos-defendingUnit.occupiedSpace.yPos);
+			
 			attackUnit = attackingUnit;
 			defendUnit = defendingUnit;
 
@@ -1058,8 +1060,8 @@ musicTimer.start();
 			if (dmg < 0) {
 				dmg = 0;
 			}
-			JLabel attackingDamage = new JLabel("Damage: " + dmg);
-			int atkAccuracy = attackingUnit.weapon.accuracy - defendingUnit.avoidance
+			JLabel attackingDamage = new JLabel("Damage: " + attackingUnit.weapon.attackMin +"-"+attackingUnit.weapon.attackMax);
+			int atkAccuracy = attackingUnit.weapon.getAccuracy(distance) - defendingUnit.avoidance
 					- defendingUnit.occupiedSpace.avoMod;
 			if (atkAccuracy > 100) {
 				atkAccuracy = 100;
@@ -1124,8 +1126,8 @@ musicTimer.start();
 			if (dmg < 0) {
 				dmg = 0;
 			}
-			JLabel defendingDamage = new JLabel("Damage: " + dmg);
-			int defAccuracy = defendingUnit.weapon.accuracy - attackingUnit.avoidance
+			JLabel defendingDamage = new JLabel("Damage: " + defendingUnit.weapon.attackMin+"-"+defendingUnit.weapon.attackMax);
+			int defAccuracy = defendingUnit.weapon.getAccuracy(distance) - attackingUnit.avoidance
 					- attackingUnit.occupiedSpace.avoMod;
 			if (defAccuracy > 100) {
 				defAccuracy = 100;
@@ -1585,12 +1587,12 @@ musicTimer.start();
 					counterAttack = true;
 					attack(defendUnit, attackUnit);
 				}
-
+				/*
 				if (attackUnit.speed >= defendUnit.speed + 5) {
 					attack(attackUnit, defendUnit);
 				} else if (attackFound && defendUnit.speed >= attackUnit.speed + 5) {
 					attack(defendUnit, attackUnit);
-				}
+				}*/
 			} catch (NullPointerException o) {
 				System.out.println("not reached?");
 			}
@@ -1613,8 +1615,9 @@ musicTimer.start();
 		}
 
 		private void attack(Unit attackingUnit, Unit defendingUnit) {
-
-			int atkAccuracy = attackingUnit.weapon.accuracy - defendingUnit.avoidance
+			int distance = Math.abs(attackingUnit.occupiedSpace.xPos-defendingUnit.occupiedSpace.xPos)+
+					Math.abs(attackingUnit.occupiedSpace.yPos-defendingUnit.occupiedSpace.yPos);
+			int atkAccuracy = attackingUnit.weapon.getAccuracy(distance) - defendingUnit.avoidance
 					- defendingUnit.occupiedSpace.avoMod;
 			if (Math.random() * 100 < atkAccuracy) {
 				int damage = defendingUnit.receiveAttack(attackingUnit, defendingUnit.occupiedSpace);
