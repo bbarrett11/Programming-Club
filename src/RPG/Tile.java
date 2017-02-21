@@ -83,9 +83,8 @@ public class Tile extends JPanel {
 	}
 
 	public void updateIcon(boolean down) {
-		if (occupied) {
+		if (occupied&&occupyingUnit.active) {
 			remove(character);
-			if (occupyingUnit.active) {
 				character = new JLabel(occupyingUnit.graphic);
 				if(!down)
 				{
@@ -98,10 +97,6 @@ public class Tile extends JPanel {
 					setLayout(layout);
 				}
 				add(character);
-			} else {
-				character = new JLabel(occupyingUnit.inactiveGraphic);
-				add(character);
-			}
 		}
 	}
 

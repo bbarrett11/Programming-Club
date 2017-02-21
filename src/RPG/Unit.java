@@ -17,12 +17,12 @@ public class Unit implements Serializable {
 	public String type;
 	public int moveRange;
 	public int[] attackRange;
-	public int allignment;
+	public int allignment; //team
 	public boolean active = false;
 	public Equipment weapon;
 
-	public int maxEnthusiasm;
-	public int enthusiasm;
+	public int maxEnthusiasm; //max health
+	public int enthusiasm; //current health
 	public int state;
 	public int toughness;
 	public int maxFocus;
@@ -35,6 +35,7 @@ public class Unit implements Serializable {
 	public int glory; // amount of hp recovered
 	public String battleCry; // want an array, index corresponds to state
 	// level, exp, skills, buffs
+	public int level=1;
 
 	public Unit(String unitName, int allignmentInput) {
 		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
@@ -44,7 +45,7 @@ public class Unit implements Serializable {
 		name = unitName;
 		moveRange = 6;
 		attackRange = new int[] { 1 };
-		weapon = new Equipment("Fists");
+		weapon = new Equipment("Fists","Weapon",level);
 		allignment = allignmentInput;
 	}
 
@@ -57,7 +58,7 @@ public class Unit implements Serializable {
 		name = unitName;
 		moveRange = 6;
 		allignment = allignmentInput;
-		weapon = new Equipment(weaponName);
+		weapon = new Equipment(weaponName,"Weapon",level);
 		attackRange = weapon.getRange();
 
 		maxEnthusiasm = 30;
@@ -88,7 +89,7 @@ public class Unit implements Serializable {
 		type = unitType;
 		moveRange = 6;
 		allignment = allignmentInput;
-		weapon = new Equipment(weaponName);
+		weapon = new Equipment(weaponName,"Weapon",level);
 		attackRange = weapon.getRange();
 
 		maxEnthusiasm = maxEnthusiasmInput;
@@ -133,20 +134,22 @@ public class Unit implements Serializable {
 		calculateState();
 
 		int totalDamage;
-
-		totalDamage = strength + weapon.attack;
+		
+		totalDamage = strength + weapon.getAttack();
 		totalDamage *= Math.pow(1.3, state);
 
 		return totalDamage;
 	}
 
 	public int receiveAttack(Unit attacker, Tile space) {
-		bleedThreshold = toughness / 2 + 1;
-		int damageReceived = attacker.calculateAttack() - toughness - space.defenseMod;
-
+		/*bleedThreshold = toughness / 2 + 1;
 		if (damageReceived > bleedThreshold) {
 			damageReceived *= 1.3;
-		}
+		}*/
+		
+		int damageReceived = attacker.calculateAttack() - toughness - space.defenseMod;
+		
+	
 
 		calculateState();
 
