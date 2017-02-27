@@ -142,15 +142,14 @@ public class Unit implements Serializable {
 	}
 
 	public int receiveAttack(Unit attacker, Tile space) {
-		/*bleedThreshold = toughness / 2 + 1;
-		if (damageReceived > bleedThreshold) {
+		bleedThreshold = maxEnthusiasm/3;
+		/*if (damageReceived > bleedThreshold) {
 			damageReceived *= 1.3;
 		}*/
 		
 		int damageReceived = attacker.calculateAttack() - toughness - space.defenseMod;
+		//System.out.println(effects);
 		
-	
-
 		calculateState();
 
 		return damageReceived;

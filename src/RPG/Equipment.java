@@ -57,10 +57,10 @@ public class Equipment implements Serializable {
 	public double levelMod = 1.25;
 	public double xP = 0;
 	public double xPGain = 100;
-//weapon stats
+	//weapon stats
 	private int[] range;
 	public int[] accuracy;
-	public double attackMin,attackMax;
+	public double attack;
 	public int stunChance;
 	public int[] bleedChance, bleedNumber;
 	public int bN;
@@ -70,21 +70,21 @@ public class Equipment implements Serializable {
 	public int recoilChance = 0;
 	public int instantKillChance = 0;	
 	
-	/*
+	/**
 	 * Weapon:		Range		Acc			damage		LvlUp		stun%		bleed(3 turns)	disarm%		Crit%	CritRating	add effect			
-	 * Sword		1			75			4-6			*1.25		10							10			10		+100%		benefit against sword opponent?
-	 * Cross-Bow	1,2,3		90,70,60	6-7																10		+100%
-	 * Long-Bow		2,3,4		75,55,45	5-7																10		+100%
-	 * Axe			1			60			5-8													15			10		+150%
-	 * Pike			1,2			40,70		4-8																10		+100%
-	 * Spear		1			70			5-6																10		+100%		Throw Spear
-	 * Dagger		1			80			1-3									3 p/t 45% 					10		+100%
-	 * Hammer		1			75			3-5						15							1.5			10		+100%
-	 * Fists		1			95			2-5													5			10		+100%
-	 * Staff		1,2,3		90,90,90	3-5						5															Increase mana
-	 * Throw Knife	1,2			80,75		6-7			
-	 * Shuriken		1,2,3		95,90,85	4-6
-	 * LightSaber	1,2,3,4,5	100			999-999					100							100			100		+100%		If hits, target dies
+	 * Sword		1			75			5			*1.25		10							10			10		+100%		benefit against sword opponent?
+	 * Cross-Bow	1,2,3		90,70,60	6.5																10		+100%
+	 * Long-Bow		2,3,4		75,55,45	6																10		+100%
+	 * Axe			1			60			6.5													15			10		+150%
+	 * Pike			1,2			40,70		6																10		+100%
+	 * Spear		1			70			5.5																10		+100%		Throw Spear
+	 * Dagger		1			80			2									3 p/t 45% 					10		+100%
+	 * Hammer		1			75			4						15							1.5			10		+100%
+	 * Fists		1			95			3.5													5			10		+100%
+	 * Staff		1,2,3		90,90,90	4						5										10		+100%		Increase mana
+	 * Throw Knife	1,2			80,75		6.5																10		+100%
+	 * Shuriken		1,2,3		95,90,85	4.5															10		+100%
+	 * LightSaber	1,2,3,4,5	100			999 					100							100			100		+100%		If hits, target dies
 	 * 
 	 * When reaches lvl 10 get ultamite ability?
 	 * 
@@ -132,7 +132,83 @@ public class Equipment implements Serializable {
 	Weak		-20% dmg
 	*/
 	
+	/**	Armor:						Defense
+	 * Chestplate:Heavy	Armor			 			
+	 * 
+	 * Molten						500
+	 * DragonScale					300
+	 * Titanium						200
+	 * Gold							120
+	 * TurtleShell					70
+	 * Steel						30
+	 * Ivory						15
+	 * Wood							10
+	 * 
+	 * Adjectives
+	 * 
+	 * 
+	 * Tunic:LightArmor			
+	 * 
+	 * Mithril						200	
+	 * Scalemail					100	
+	 * Silk							35
+	 * Chainmail					50
+	 * Reinforced Leather			25
+	 * Leather						10
+	 * Wool							5
+	 * Cloth						2
+	 * 
+	 * Heavy Headgear			- Less Vision/Attack
+	 * 
+	 * Molten Crown					120
+	 * DragonScale					95
+	 * Titanium FaceGuard			65
+	 * Gold							45
+	 * BearHide						35
+	 * Steel GreatHelm				17
+	 * Ivory FaceMask				10
+	 * Wood Cap						4
+	 * 
+	 * Light Headgear			- Extra Vision? Extra Attack
+	 * 
+	 * Mithril						50
+	 * Scalemail					40				
+	 * Silk							30		
+	 * Chainmail					20
+	 * Reinforced Leather			15
+	 * Leather						10			
+	 * Wool							5
+	 * Cloth						2
+	 * 
+	 * Heavy Boots				- Less Speed
+	 * 
+	 * Molten 						100
+	 * DragonScale					80
+	 * Titanium 					60
+	 * Gold							42
+	 * BearHide						30
+	 * Steel 						13
+	 * Ivory 						7
+	 * Wood 						2						
+	 * 
+	 * Light Boots				- Moar Speed
+	 * 
+	  * Mithril						45
+	 * Scalemail					35				
+	 * Silk							30		
+	 * Chainmail					22
+	 * Reinforced Leather			12
+	 * Leather						8			
+	 * Wool							5
+	 * Cloth						3
+	 */
 	
+	/**Accessory:
+	 * 
+	 *
+	 * 
+	 * 
+	 */
 	
 	public Equipment(String nameInput, String type,int level) {
 		this.level = level;
@@ -178,8 +254,7 @@ public class Equipment implements Serializable {
 			case "Sword":
 				range = new int[]{1};
 				accuracy = new int[]{75};
-				attackMin = 4 * Math.pow(levelMod, level-1);
-				attackMax = 6 * Math.pow(levelMod, level-1);
+				attack = 5 * Math.pow(levelMod, level-1);
 				stunChance = 10;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -190,8 +265,7 @@ public class Equipment implements Serializable {
 			case "Cross-Bow":
 				range = new int[]{1,2,3};
 				accuracy = new int[]{90,70,60};
-				attackMin = 6 * Math.pow(levelMod, level-1);
-				attackMax = 7 * Math.pow(levelMod, level-1);
+				attack = 6.5 * Math.pow(levelMod, level-1);
 				stunChance = 0;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -202,8 +276,7 @@ public class Equipment implements Serializable {
 			case "Long-Bow":
 				range = new int[]{2,3,4};
 				accuracy = new int[]{75,55,45};
-				attackMin = 5 * Math.pow(levelMod, level-1);
-				attackMax = 7 * Math.pow(levelMod, level-1);
+				attack = 6 * Math.pow(levelMod, level-1);
 				stunChance = 0;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -214,8 +287,7 @@ public class Equipment implements Serializable {
 			case "Axe":
 				range = new int[]{1};
 				accuracy = new int[]{60};
-				attackMin = 5 * Math.pow(levelMod, level-1);
-				attackMax = 8 * Math.pow(levelMod, level-1);
+				attack = 6.5 * Math.pow(levelMod, level-1);
 				stunChance = 0;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -226,8 +298,7 @@ public class Equipment implements Serializable {
 			case "Pike":
 				range = new int[]{1,2};
 				accuracy = new int[]{40,70};
-				attackMin = 4 * Math.pow(levelMod, level-1);
-				attackMax = 8 * Math.pow(levelMod, level-1);
+				attack = 6 * Math.pow(levelMod, level-1);
 				stunChance = 0;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -238,8 +309,7 @@ public class Equipment implements Serializable {
 			case "Spear":
 				range = new int[]{1};
 				accuracy = new int[]{70};
-				attackMin = 5 * Math.pow(levelMod, level-1);
-				attackMax = 6 * Math.pow(levelMod, level-1);
+				attack = 5.5 * Math.pow(levelMod, level-1);
 				stunChance = 0;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -250,8 +320,7 @@ public class Equipment implements Serializable {
 			case "Dagger":
 				range = new int[]{1};
 				accuracy = new int[]{80};
-				attackMin = 1 * Math.pow(levelMod, level-1);
-				attackMax = 3 * Math.pow(levelMod, level-1);
+				attack = 2 * Math.pow(levelMod, level-1);
 				stunChance = 0;
 				bleedChance = new int[]{45,0};
 				bleedNumber = new int[]{(int)(3*(Math.pow(levelMod, level-1))),0};
@@ -263,8 +332,7 @@ public class Equipment implements Serializable {
 			case "Hammer":
 				range = new int[]{1};
 				accuracy = new int[]{75};
-				attackMin = 3 * Math.pow(levelMod, level-1);
-				attackMax = 5 * Math.pow(levelMod, level-1);
+				attack = 4 * Math.pow(levelMod, level-1);
 				stunChance = 15;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -275,8 +343,7 @@ public class Equipment implements Serializable {
 			case "Fists":
 				range = new int[]{1};
 				accuracy = new int[]{95};
-				attackMin = 2 * Math.pow(levelMod, level-1);
-				attackMax = 5 * Math.pow(levelMod, level-1);
+				attack = 3.5 * Math.pow(levelMod, level-1);
 				stunChance = 0;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -288,8 +355,7 @@ public class Equipment implements Serializable {
 			case "Staff":
 				range = new int[]{1,2,3};
 				accuracy = new int[]{90,90,90};
-				attackMin = 3 * Math.pow(levelMod, level-1);
-				attackMax = 5 * Math.pow(levelMod, level-1);
+				attack = 4 * Math.pow(levelMod, level-1);
 				stunChance = 5;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -300,8 +366,7 @@ public class Equipment implements Serializable {
 			case "Throwing-Knife":
 				range = new int[]{1,2};
 				accuracy = new int[]{80,75};
-				attackMin = 6 * Math.pow(levelMod, level-1);
-				attackMax = 7 * Math.pow(levelMod, level-1);
+				attack = 6.5 * Math.pow(levelMod, level-1);
 				stunChance = 0;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -312,8 +377,7 @@ public class Equipment implements Serializable {
 			case "Shuriken":
 				range = new int[]{1,2,3};
 				accuracy = new int[]{95,90,85};
-				attackMin = 4 * Math.pow(levelMod, level-1);
-				attackMax = 6 * Math.pow(levelMod, level-1);
+				attack = 4.5 * Math.pow(levelMod, level-1);
 				stunChance = 0;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -324,8 +388,7 @@ public class Equipment implements Serializable {
 			case "LightSaber":
 				range = new int[]{1,2,3,4,5};
 				accuracy = new int[]{100,100,100,100,100};
-				attackMin = 999 * Math.pow(levelMod, level-1);
-				attackMax = 999 * Math.pow(levelMod, level-1);
+				attack = 999 * Math.pow(levelMod, level-1);
 				stunChance = 0;
 				bleedChance = new int[2];
 				bleedNumber = new int[2];
@@ -358,19 +421,16 @@ public class Equipment implements Serializable {
 			case "Bad":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]-=10;
-				attackMin -= 3 *(Math.pow(levelMod, level-1));
-				attackMax -= 3 *(Math.pow(levelMod, level-1));
+				attack -= 3 *(Math.pow(levelMod, level-1));
 				break;
 			case "Beautiful":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]-=5;
-				attackMin *= 1.05;
-				attackMax *= 1.05;
+				attack *= 1.05;
 				break;
 			case "Broken":
 				//could also do 50 % chance to break
-				attackMin/=2;
-				attackMax/=2;
+				attack/=2;
 				break;
 			case "Chemical":
 				//gain random buff/debuff everytime is hit?
@@ -385,28 +445,24 @@ public class Equipment implements Serializable {
 				//negates all other effects?
 				break;
 			case "Dangerous":
-				attackMin *= 2;
-				attackMax *= 2;
+				attack *= 2;
 				recoilChance +=20;
 				break;
 			case "Deadly":
-				attackMin *= 1.15;
-				attackMax *= 1.15;
+				attack *= 1.15;
 				break;
 			case "Devastating":
 				critChance +=10;
 				critRating+=5;
 				break;
 			case "Effective":
-				attackMin *= 1.05;
-				attackMax *= 1.05;
+				attack *= 1.05;
 				break;
 			case "Excellent":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]+=15;
 
-				attackMin *= 1.1;
-				attackMax *= 1.1;
+				attack *= 1.1;
 				break;
 			case "Fatal":
 				instantKillChance+=5;
@@ -417,20 +473,17 @@ public class Equipment implements Serializable {
 			case "Fine":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]+=7;
-				attackMin += 2 *(Math.pow(levelMod, level-1));
-				attackMax += 2 *(Math.pow(levelMod, level-1));
+				attack += 2 *(Math.pow(levelMod, level-1));
 				break;
 			case "Good":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]+=5;
-				attackMin += 1 *(Math.pow(levelMod, level-1));
-				attackMax += 1 *(Math.pow(levelMod, level-1));
+				attack += 1 *(Math.pow(levelMod, level-1));
 				break;
 			case "Great":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]+=10;
-				attackMin += 3 *(Math.pow(levelMod, level-1));
-				attackMax += 3 *(Math.pow(levelMod, level-1));
+				attack += 3 *(Math.pow(levelMod, level-1));
 				break;
 			case "Gross":
 				for(int i = 0; i < accuracy.length;i++)
@@ -443,8 +496,7 @@ public class Equipment implements Serializable {
 			case "Heavy":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]-=15;
-				attackMin *=1.2;
-				attackMax *=1.2;
+				attack *=1.2;
 				stunChance+=10;
 				break;
 			case "Keen":
@@ -453,8 +505,7 @@ public class Equipment implements Serializable {
 			case "Large":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]-=10;
-				attackMin *=1.2;
-				attackMax *=1.2;
+				attack *=1.2;
 				break;
 			case "Lethal":
 				instantKillChance +=10;
@@ -463,8 +514,7 @@ public class Equipment implements Serializable {
 				//5% chance to teleport user and/or target somewhere random
 				break;
 			case "Old":
-				attackMin -= 2 *(Math.pow(levelMod, level-1));
-				attackMax -= 2 *(Math.pow(levelMod, level-1));
+				attack -= 2 *(Math.pow(levelMod, level-1));
 				break;
 			case "Ordinary":
 				//see customary
@@ -472,12 +522,10 @@ public class Equipment implements Serializable {
 			case "Poor":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]-=5;
-				attackMin -= 1 *(Math.pow(levelMod, level-1));
-				attackMax -= 1 *(Math.pow(levelMod, level-1));
+				attack -= 1 *(Math.pow(levelMod, level-1));
 				break;
 			case "Powerful":
-				attackMin *=1.2;
-				attackMax *=1.2;
+				attack *=1.2;
 				break;
 			case "Reliable":
 				for(int i = 0; i < accuracy.length;i++)
@@ -492,24 +540,21 @@ public class Equipment implements Serializable {
 			case "Small":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]+=name.contains("Dagger") ? 10:-10;
-				attackMin *=.8;
-				attackMax *=.8;
+				attack *=.8;
 				break;
 			case "Terrible":
 				break;
 			case "Tiny":
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]+=name.contains("Dagger") ? 10:-10;
-				attackMin *=.7;
-				attackMax *=.7;
+				attack *=.7;
 				break;
 			case "Ultamite":
 				//Shiny
 				stunChance+=10;
 				for(int i = 0; i < accuracy.length;i++)
 					accuracy[i]+=10;
-				attackMin *=1.1;
-				attackMax *=1.1;
+				attack *=1.1;
 				instantKillChance+=10;
 				break;
 			case "Unusual":
@@ -520,8 +565,7 @@ public class Equipment implements Serializable {
 					accuracy[i]-=200;
 				break;
 			case "Weak":
-				attackMin *=.8;
-				attackMax *=.8;
+				attack *=.8;
 				break;			
 				
 			default:
@@ -537,9 +581,10 @@ public class Equipment implements Serializable {
 	public int getAttack()
 	{
 		Random randGenerator = new Random();
-		int damage = (int)attackMin + (int)randGenerator.nextInt(((int)attackMax-(int)attackMin));
-		System.out.println(damage);
-		
+		int damage = (int)attack;
+		/////////////////////////////
+		//System.out.println(damage);
+		/////////////////////////////
 		return damage;
 	}
 	
@@ -564,8 +609,12 @@ public class Equipment implements Serializable {
 			s+="Disarm ";
 		if(randGenerator.nextInt(100) < instantKillChance)
 			s+="Kill ";
+		if(randGenerator.nextInt(100) < bleedChance[0])
+			s+="Bleed1 ";
+		if(randGenerator.nextInt(100) < bleedChance[1])
+			s+="Bleed2 ";
 
-		return "";
+		return s.trim();
 	}
 	
 	public String toString()
@@ -576,7 +625,7 @@ public class Equipment implements Serializable {
 		+ "Item Level: "+level+"\n"
 		+ "Range: "+Arrays.toString(range)+"\n"
 		+ "Accuracy: "+Arrays.toString(accuracy)+"\n"
-		+ "Damage: "+ (int)attackMin+" - "+(int)attackMax+ "\n"
+		+ "Damage: "+ (int)attack+ "\n"
 		+ "Critical Chance: " +critChance +"%\n"
 		+ "Critical Rating: " +critRating +"\n"
 		+ "Bleed Chance: " +Arrays.toString(bleedChance) +"%\n"
