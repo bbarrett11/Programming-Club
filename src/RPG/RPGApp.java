@@ -1060,7 +1060,7 @@ musicTimer.start();
 			if (dmg < 0) {
 				dmg = 0;
 			}
-			JLabel attackingDamage = new JLabel("Damage: " + attackingUnit.weapon.attackMin +"-"+attackingUnit.weapon.attackMax);
+			JLabel attackingDamage = new JLabel("Damage: " + attackingUnit.weapon.getAttack());
 			int atkAccuracy = attackingUnit.weapon.getAccuracy(distance) - defendingUnit.avoidance
 					- defendingUnit.occupiedSpace.avoMod;
 			if (atkAccuracy > 100) {
@@ -1126,7 +1126,7 @@ musicTimer.start();
 			if (dmg < 0) {
 				dmg = 0;
 			}
-			JLabel defendingDamage = new JLabel("Damage: " + defendingUnit.weapon.attackMin+"-"+defendingUnit.weapon.attackMax);
+			JLabel defendingDamage = new JLabel("Damage: " + defendingUnit.weapon.getAttack());
 			int defAccuracy = defendingUnit.weapon.getAccuracy(distance) - attackingUnit.avoidance
 					- attackingUnit.occupiedSpace.avoMod;
 			if (defAccuracy > 100) {
@@ -1619,8 +1619,35 @@ musicTimer.start();
 					Math.abs(attackingUnit.occupiedSpace.yPos-defendingUnit.occupiedSpace.yPos);
 			int atkAccuracy = attackingUnit.weapon.getAccuracy(distance) - defendingUnit.avoidance
 					- defendingUnit.occupiedSpace.avoMod;
-			if (Math.random() * 100 < atkAccuracy) {
+			if ((new Random().nextInt(100)) < atkAccuracy) {
 				int damage = defendingUnit.receiveAttack(attackingUnit, defendingUnit.occupiedSpace);
+				String weaponEffects = attackingUnit.weapon.getAttackEffects();
+			boolean crit=false,stun=false,disarm=false,kill=false,bleed1=false,bleed2=false;
+				for(String s : weaponEffects.split(" "))
+				{
+					switch(s)
+					{
+					case "Crit":
+						damage+=(int)(damage*(double)attackingUnit.weapon.critRating/100.0);
+						crit=true;
+						break;
+					case "Stun":
+						stun=true;
+						break;
+					case "Disarm":
+						disarm = true;
+						break;
+					case "Kill":
+						kill=true;
+						break;
+					case "Bleed1":
+						bleed1=true;
+						break;
+					case "Bleed2":
+						bleed2=true;
+						break;
+					}
+				}
 				if (damage <= 0) {
 					damage = 0;
 					defendingUnit.enthusiasm += defendingUnit.glory / 2;
@@ -1628,7 +1655,7 @@ musicTimer.start();
 					combatText.add(new JLabel(defendingUnit.name + " gained " + defendingUnit.glory / 2
 							+ " enthusiasm from a successful deflection"));
 				} else {
-					combatText.add(new JLabel(attackingUnit.name + " did " + damage + " damage."));
+					combatText.add(new JLabel((crit ? "Critical Hit! ":"")+attackingUnit.name + " did " + damage + " damage."));
 				}
 				defendingUnit.enthusiasm -= damage;
 				if (damage >= defendingUnit.bleedThreshold && attackingUnit.state != 2) {
@@ -1643,6 +1670,8 @@ musicTimer.start();
 				}
 			} else {
 				combatText.add(new JLabel(attackingUnit.name + " missed."));
+				combatText.add(new JLabel(attackingUnit.name + " lost " + attackingUnit.glory / 2
+						+ " enthusiasm in disappointment."));
 			}
 
 			if (defendingUnit.enthusiasm <= 0) {
@@ -1654,7 +1683,7 @@ musicTimer.start();
 							+ " enthusiasm for defeating a foe."));
 				}
 			}
-			System.out.println("Should be");
+			//System.out.println("Should be");
 			buildAnimationWindow();
 
 		}
