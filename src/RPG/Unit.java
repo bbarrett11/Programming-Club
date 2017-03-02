@@ -2,6 +2,7 @@ package RPG;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class Unit implements Serializable {
 	final String CHARACTER_ART_PATH = "Art\\"; // put before character name to
@@ -36,6 +37,8 @@ public class Unit implements Serializable {
 	public String battleCry; // want an array, index corresponds to state
 	// level, exp, skills, buffs
 	public int level=1;
+	
+	public ArrayList<Buff> buffList;
 
 	public Unit(String unitName, int allignmentInput) {
 		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
@@ -75,6 +78,7 @@ public class Unit implements Serializable {
 		speed = 5;
 		battleCry = "I will defeat you!";
 
+		buffList = new ArrayList<Buff>();
 	}
 
 	public Unit(String unitName, String unitType, int allignmentInput, String weaponName, int maxEnthusiasmInput,
@@ -106,6 +110,7 @@ public class Unit implements Serializable {
 		speed = speedInput;
 		battleCry = "I will defeat you!";
 
+		buffList = new ArrayList<Buff>();
 	}
 
 	public void findImages() {
