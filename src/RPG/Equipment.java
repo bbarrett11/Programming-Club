@@ -49,8 +49,6 @@ public class Equipment implements Serializable {
 			"Useless",
 			"Weak",};
 	
-	
-	
 	public String name;
 	public String type;
 	public int level;
@@ -68,7 +66,13 @@ public class Equipment implements Serializable {
 	public int critRating;
 	public int disarmChance;
 	public int recoilChance = 0;
-	public int instantKillChance = 0;	
+	public int instantKillChance = 0;
+	
+	//Armor stats
+	public int toughnessAdd;
+	public int speedAdd;
+	public int strengthAdd;
+	public int diligenceAdd;
 	
 	/**
 	 * Weapon:		Range		Acc			damage		LvlUp		stun%		bleed(3 turns)	disarm%		Crit%	CritRating	add effect			
@@ -132,76 +136,60 @@ public class Equipment implements Serializable {
 	Weak		-20% dmg
 	*/
 	
-	/**	Armor:						Defense
-	 * Chestplate:Heavy	Armor			 			
+	
+	
+	/**	Armor:						Toughness		Other Effects
+	 * Heavy	Armor Sets	
 	 * 
-	 * Molten						500
-	 * DragonScale					300
-	 * Titanium						200
-	 * Gold							120
-	 * TurtleShell					70
-	 * Steel						30
-	 * Ivory						15
-	 * Wood							10
+	 * Infernisium
+	 * Molten						40				Speed -3, 	Strength +20 
+	 * Berserkium					18							Strength +40(depends on state)
+	 * DragonScale					30				Speed -1, 	Strength + 10
+	 * Titanium						21							Strength +6
+	 * Gold							16							Strength +4
+	 * TurtleShell					11				Speed -2, 	Strength +7
+	 * Steel						8				Speed -1, 	Strength +5
+	 * Ivory						5							Strength +3
+	 * Wood							3				Speed -1, 	Strength +2
 	 * 
-	 * Adjectives
 	 * 
+	 * Light Armor Sets	
 	 * 
-	 * Tunic:LightArmor			
+	 * Luxus						35				Speed +3	Diligence +6
+	 * Elementonite					30				Speed +2	Diligence +7
+	 * Mithril						28							Diligence +8
+	 * Luminefium					20							Diligence +6
+	 * Scalemail					15				Speed +2	Diligence +5
+	 * Silk							0				Speed +4, 	Diligence +7 
+	 * Chainmail					10							Diligence +5, 
+	 * Reinforced Leather			5							Diligence +3,
+	 * Leather						2							Diligence +2, 
+	 * Wool							1				Speed +1, 	Diligence +1, 
+	 * Cloth						0				Nothing
 	 * 
-	 * Mithril						200	
-	 * Scalemail					100	
-	 * Silk							35
-	 * Chainmail					50
-	 * Reinforced Leather			25
-	 * Leather						10
-	 * Wool							5
-	 * Cloth						2
+	 * Adjectives:					Effect
 	 * 
-	 * Heavy Headgear			- Less Vision/Attack
+	 * Morphic						
+	 * High-Density					
+	 * Low-Density					
+	 * Non-inFlammable				
+	 * Non-Flammable				
+	 * inFlammable					
+	 * Flammable
+	 * Liquid
+	 * Solid
+	 * Gaseous
+	 * Plasmatic
+	 * Refractive
+	 * Positive
+	 * Negative
+	 * Denatured
+	 * Unstable
+	 * Stable
+	 * Transparent
 	 * 
-	 * Molten Crown					120
-	 * DragonScale					95
-	 * Titanium FaceGuard			65
-	 * Gold							45
-	 * BearHide						35
-	 * Steel GreatHelm				17
-	 * Ivory FaceMask				10
-	 * Wood Cap						4
-	 * 
-	 * Light Headgear			- Extra Vision? Extra Attack
-	 * 
-	 * Mithril						50
-	 * Scalemail					40				
-	 * Silk							30		
-	 * Chainmail					20
-	 * Reinforced Leather			15
-	 * Leather						10			
-	 * Wool							5
-	 * Cloth						2
-	 * 
-	 * Heavy Boots				- Less Speed
-	 * 
-	 * Molten 						100
-	 * DragonScale					80
-	 * Titanium 					60
-	 * Gold							42
-	 * BearHide						30
-	 * Steel 						13
-	 * Ivory 						7
-	 * Wood 						2						
-	 * 
-	 * Light Boots				- Moar Speed
-	 * 
-	  * Mithril						45
-	 * Scalemail					35				
-	 * Silk							30		
-	 * Chainmail					22
-	 * Reinforced Leather			12
-	 * Leather						8			
-	 * Wool							5
-	 * Cloth						3
 	 */
+	
 	
 	/**Accessory:
 	 * 
@@ -210,6 +198,7 @@ public class Equipment implements Serializable {
 	 * 
 	 */
 	
+	
 	public Equipment(String nameInput, String type,int level) {
 		this.level = level;
 		this.type = type;
@@ -217,7 +206,9 @@ public class Equipment implements Serializable {
 		String[] Attributes = nameInput.split(":")[0].split(" ");
 		if(type.equals("Weapon"))
 			setUpWeapon(Attributes);
-		
+		if(type.equals("ArmorSet"))
+			setUpArmor(Attributes);
+
 		
 		/*
 		if (name.substring(0, 5).equals("sword")) {
@@ -244,6 +235,7 @@ public class Equipment implements Serializable {
 		*/
 	}
 
+	
 	public void setUpWeapon(String[] Attributes)
 	{
 		for(int h = Attributes.length-1; h >=0;h--)
@@ -321,13 +313,13 @@ public class Equipment implements Serializable {
 				range = new int[]{1};
 				accuracy = new int[]{80};
 				attack = 2 * Math.pow(levelMod, level-1);
-				stunChance = 0;
+				stunChance = 100;
 				bleedChance = new int[]{45,0};
 				bleedNumber = new int[]{(int)(3*(Math.pow(levelMod, level-1))),0};
 				bN^=1;
 				critChance = 10;
 				critRating = 100;
-				disarmChance = 0;	
+				disarmChance = 100;	
 				break;
 			case "Hammer":
 				range = new int[]{1};
@@ -574,9 +566,146 @@ public class Equipment implements Serializable {
 		}
 	}
 	
+	
+	public void setUpArmor(String[] Attributes)
+	{
+		for(int h = Attributes.length-1; h >=0;h--)
+		{
+			switch(Attributes[h])
+			{
+			case "Infernisium":
+				break;
+			case "Molten":
+				toughnessAdd = 40;
+				speedAdd = -3;
+				strengthAdd = 20;
+				diligenceAdd = 0;
+				break;
+			case "Berserkium":
+				toughnessAdd = 18;
+				speedAdd = -3;
+				strengthAdd = 40;
+				diligenceAdd = 0;
+				break;
+			case "DragonScale":
+				toughnessAdd = 30;
+				speedAdd = -1;
+				strengthAdd = 10;
+				diligenceAdd = 0;
+				break;
+			case "Titanium":
+				toughnessAdd = 21;
+				speedAdd = 0;
+				strengthAdd = 6;
+				diligenceAdd = 0;
+				break;
+			case "Gold":
+				toughnessAdd = 16;
+				speedAdd = 0;
+				strengthAdd = 4;
+				diligenceAdd = 0;
+				break;
+			case "TurtleShell":
+				toughnessAdd = 1;
+				speedAdd = -2;
+				strengthAdd = 7;
+				diligenceAdd = 0;
+				break;
+			case "Steel":
+				toughnessAdd = 8;
+				speedAdd = -1;
+				strengthAdd = 5;
+				diligenceAdd = 0;
+				break;
+			case "Ivory":
+				toughnessAdd = 5;
+				speedAdd = 0;
+				strengthAdd = 3;
+				diligenceAdd = 0;
+				break;
+			case "Wood":
+				toughnessAdd = 3;
+				speedAdd = -1;
+				strengthAdd = 2;
+				diligenceAdd = 0;
+				break;
+			case "Luxus":
+				toughnessAdd = 35;
+				speedAdd = 3;
+				strengthAdd = 0;
+				diligenceAdd = 6;
+				break;
+			case "Elementonite":
+				toughnessAdd = 30;
+				speedAdd = 2;
+				strengthAdd = 0;
+				diligenceAdd = 7;
+				break;
+			case "Mithril":
+				toughnessAdd = 28;
+				speedAdd = 0;
+				strengthAdd = 0;
+				diligenceAdd = 8;
+				break;
+			case "Luminefium":
+				toughnessAdd = 20;
+				speedAdd = 0;
+				strengthAdd = 0;
+				diligenceAdd = 6;
+				break;
+			case "Scalemail":
+				toughnessAdd = 15;
+				speedAdd = 2;
+				strengthAdd = 0;
+				diligenceAdd = 5;
+				break;
+			case "Silk":
+				toughnessAdd = 0;
+				speedAdd = 4;
+				strengthAdd = 0;
+				diligenceAdd = 7;
+				break;
+			case "Chainmail":
+				toughnessAdd = 10;
+				speedAdd = 0;
+				strengthAdd = 0;
+				diligenceAdd = 5;
+				break;
+			case "Reinforced-Leather":
+				toughnessAdd = 5;
+				speedAdd = 0;
+				strengthAdd = 0;
+				diligenceAdd = 3;
+				break;
+			case "Leather":
+				toughnessAdd = 2;
+				speedAdd = 0;
+				strengthAdd = 0;
+				diligenceAdd = 2;
+				break;
+			case "Wool":
+				toughnessAdd = 1;
+				speedAdd = 1;
+				strengthAdd = 0;
+				diligenceAdd = 1;
+				break;
+			case "Cloth":
+				toughnessAdd = 0;
+				speedAdd = 0;
+				strengthAdd = 0;
+				diligenceAdd = 0;
+				break;
+			default:
+				break;
+			
+			}
+		}
+	}
+
 	public int[] getRange() {
 		return range;
 	}
+	
 	
 	public int getAttack()
 	{
@@ -588,6 +717,7 @@ public class Equipment implements Serializable {
 		return damage;
 	}
 	
+	
 	public int getAccuracy(int n)
 	{
 		for(int i = 0; i < range.length; i++)
@@ -596,6 +726,7 @@ public class Equipment implements Serializable {
 		return 0;
 	}
 
+	
 	public String getAttackEffects()
 	{
 		String s = "";
@@ -617,27 +748,39 @@ public class Equipment implements Serializable {
 		return s.trim();
 	}
 	
+	
 	public String toString()
 	{
 		String s = "";
-		s+=name+ "\n"
-		+ "Type: "+type+"\n"
-		+ "Item Level: "+level+"\n"
-		+ "Range: "+Arrays.toString(range)+"\n"
-		+ "Accuracy: "+Arrays.toString(accuracy)+"\n"
-		+ "Damage: "+ (int)attack+ "\n"
-		+ "Critical Chance: " +critChance +"%\n"
-		+ "Critical Rating: " +critRating +"\n"
-		+ "Bleed Chance: " +Arrays.toString(bleedChance) +"%\n"
-		+ "Bleed Rating: " +Arrays.toString(bleedNumber) +"\n"
-		+ "Stun Chance: "+stunChance +"%\n"
-		+ "Disarm Chance: "+disarmChance +"%\n"
-		+ "Recoil Chance: "+recoilChance +"%\n"
-		+ "Instant Kill Chance: "+instantKillChance +"%\n"
-
-;
-		
+		if(type.equals("Weapon"))
+		{
+			s+=name+ "\n"
+			+ "Type: "+type+"\n"
+			+ "Item Level: "+level+"\n"
+			+ "Range: "+Arrays.toString(range)+"\n"
+			+ "Accuracy: "+Arrays.toString(accuracy)+"\n"
+			+ "Damage: "+ (int)attack+ "\n"
+			+ "Critical Chance: " +critChance +"%\n"
+			+ "Critical Rating: " +critRating +"\n"
+			+ "Bleed Chance: " +Arrays.toString(bleedChance) +"%\n"
+			+ "Bleed Rating: " +Arrays.toString(bleedNumber) +"\n"
+			+ "Stun Chance: "+stunChance +"%\n"
+			+ "Disarm Chance: "+disarmChance +"%\n"
+			+ "Recoil Chance: "+recoilChance +"%\n"
+			+ "Instant Kill Chance: "+instantKillChance +"%\n";
+		}
+		else if(type.equals("ArmorSet"))
+		{
+			s+=name+ "\n"
+			+ "Type: "+type+"\n"
+			+ "Item Level: "+level+"\n"
+			+ "Toughness: "+(toughnessAdd >= 0 ? "+":"")+toughnessAdd+"\n"
+			+ "Speed: "+(speedAdd >= 0 ? "+":"")+speedAdd+"\n"
+			+ "Strength: "+(strengthAdd >= 0 ? "+":"")+strengthAdd+"\n"
+			+ "Diligence: "+(diligenceAdd >= 0 ? "+":"")+diligenceAdd+"\n";
+		}
 		return s;
 	}
+
 
 }

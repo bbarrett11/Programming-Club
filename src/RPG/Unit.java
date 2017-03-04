@@ -21,19 +21,21 @@ public class Unit implements Serializable {
 	public int allignment; //team
 	public boolean active = false;
 	public Equipment weapon;
-
+	public Equipment armorSet;
+	
 	public int maxEnthusiasm; //max health
 	public int enthusiasm; //current health
-	public int state;
-	public int toughness;
-	public int maxFocus;
-	public int focus;
-	public int dilligence;
-	public int strength;
-	public int speed;
-	public int avoidance;
-	public int bleedThreshold;
+	public int state; //how happy one is
+	public int toughness; // armor
+	public int maxFocus; // max mana
+	public int focus; //current mana
+	public int diligence; //magic stat
+	public int strength; //physical damage stat
+	public int speed; //number of squares can move
+	public int avoidance; // extra chance to dodge
+	public int bleedThreshold; //threshold required to overcome in order to gain health on hit 
 	public int glory; // amount of hp recovered
+	public int critToughness; // crit armor
 	public String battleCry; // want an array, index corresponds to state
 	// level, exp, skills, buffs
 	public int level=1;
@@ -49,6 +51,7 @@ public class Unit implements Serializable {
 		moveRange = 6;
 		attackRange = new int[] { 1 };
 		weapon = new Equipment("Fists","Weapon",level);
+		armorSet = new Equipment("Cloth:Cloth Armor","ArmorSet",level);
 		allignment = allignmentInput;
 	}
 
@@ -62,6 +65,7 @@ public class Unit implements Serializable {
 		moveRange = 6;
 		allignment = allignmentInput;
 		weapon = new Equipment(weaponName,"Weapon",level);
+		armorSet = new Equipment("Cloth:Cloth Armor","ArmorSet",level);
 		attackRange = weapon.getRange();
 
 		maxEnthusiasm = 30;
@@ -70,14 +74,14 @@ public class Unit implements Serializable {
 		toughness = 4;
 		maxFocus = 5;
 		focus = maxFocus;
-		dilligence = 7;
+		diligence = 7;
 		strength = 3;
 		bleedThreshold = toughness / 2 + 1;
 		glory = 2;
 		avoidance = 5;
 		speed = 5;
 		battleCry = "I will defeat you!";
-
+		
 		buffList = new ArrayList<Buff>();
 	}
 
@@ -94,6 +98,7 @@ public class Unit implements Serializable {
 		moveRange = 6;
 		allignment = allignmentInput;
 		weapon = new Equipment(weaponName,"Weapon",level);
+		armorSet = new Equipment("Cloth:Cloth Armor","ArmorSet",level);
 		attackRange = weapon.getRange();
 
 		maxEnthusiasm = maxEnthusiasmInput;
@@ -102,7 +107,7 @@ public class Unit implements Serializable {
 		toughness = toughnessInput;
 		maxFocus = maxFocusInput;
 		focus = maxFocus;
-		dilligence = dilligenceInput;
+		diligence = dilligenceInput;
 		strength = strengthInput;
 		bleedThreshold = toughness / 2 + 1;
 		glory = gloryInput;
@@ -165,9 +170,18 @@ public class Unit implements Serializable {
 		occupiedSpace.remove(this);
 	}
 
-	public void equip(Equipment newWeapon) {
+	public void equipWeapon(Equipment newWeapon) {
 		weapon = newWeapon;
 		attackRange = newWeapon.getRange();
+	}
+	
+	public void equipArmor(Equipment newArmor) {
+		armorSet = newArmor;
+		
+	}
+	
+	public void equipAccessory(Equipment newAccessory) {
+		
 	}
 
 	public void apply(Buff theBigCheese) {
