@@ -33,10 +33,11 @@ public class RPGApp extends JFrame {
 		RPGApp start = new RPGApp("Test");
 	}
 
-	Unit senorSavesTheDay = new Unit("SenorSavesTheDay", 0, "Atomic Dagger: Senor's Sword");
-	Unit pizzaJew = new Unit("PizzaJew", 1, "Fists:Hands");
-	Unit elLady = new Unit("ElLady", 0, "Long-Bow: El Lady's Long-Bow");
-	Unit christmasNinja = new Unit("ChristmasNinja", 0, "Shuriken: Christmas Ninaja's Shuriken");
+	Unit senorSavesTheDay = new Unit("SenorSavesTheDay", 0, "Atomic Dagger: Senor's Sword","Cloth:Cloth Armor");
+	
+	Unit pizzaJew = new Unit("PizzaJew", 1, "Fists:Hands","Cloth:Cloth Armor");
+	Unit elLady = new Unit("ElLady", 0, "Long-Bow: El Lady's Long-Bow","Cloth:Cloth Armor");
+	Unit christmasNinja = new Unit("ChristmasNinja", 0, "Shuriken: Christmas Ninaja's Shuriken","Cloth:Cloth Armor");
 	SpringLayout layout;
 
 	public void myAttackWillRainDownFromTheSky() {
@@ -758,7 +759,6 @@ musicTimer.start();
 			player.play();
 			
 		} catch (FileNotFoundException | JavaLayerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -778,7 +778,6 @@ musicTimer.start();
 			player.play();
 			
 		} catch (FileNotFoundException | JavaLayerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -1022,8 +1021,6 @@ musicTimer.start();
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		public void createAggressivePortraitWindow(Tile space, Unit character) {
@@ -1050,7 +1047,7 @@ musicTimer.start();
 			actionList = new ArrayList<String>();
 
 			if (false) { // will be changed to check if talkable character
-							// adjacent
+							// adjacent//TODO
 				actionList.add("Talk");
 			}
 
@@ -1285,7 +1282,6 @@ musicTimer.start();
 			System.out.println(e.getPreciseWheelRotation());
 			
 		}
-
 	}
 
 	private class PlayerSpawnMouseListener implements MouseListener {
@@ -1489,7 +1485,6 @@ musicTimer.start();
 			try {
 				infoPanel = new InfoPanel(movingUnit);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			

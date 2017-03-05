@@ -12,11 +12,11 @@ public class Unit implements Serializable {
 	public transient ImageIcon portrait;
 	public transient ImageIcon inactiveGraphic;
 	public transient ImageIcon attackAnimation;
-	public boolean placed;
+	public boolean placed; 
 	public transient Tile occupiedSpace;
 	public String name;
 	public String type;
-	public int moveRange;
+	public int moveRange;//number of squares can move
 	public int[] attackRange;
 	public int allignment; //team
 	public boolean active = false;
@@ -31,7 +31,7 @@ public class Unit implements Serializable {
 	public int focus; //current mana
 	public int diligence; //magic stat
 	public int strength; //physical damage stat
-	public int speed; //number of squares can move
+	public int speed; //if attacks first
 	public int avoidance; // extra chance to dodge
 	public int bleedThreshold; //threshold required to overcome in order to gain health on hit 
 	public int glory; // amount of hp recovered
@@ -55,7 +55,7 @@ public class Unit implements Serializable {
 		allignment = allignmentInput;
 	}
 
-	public Unit(String unitName, int allignmentInput, String weaponName) {
+	public Unit(String unitName, int allignmentInput, String weaponName,String armorSetName) {
 		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
 		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + unitName + "Inactive.png");
 		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + unitName + "Attack.gif");
@@ -64,9 +64,6 @@ public class Unit implements Serializable {
 		name = unitName;
 		moveRange = 6;
 		allignment = allignmentInput;
-		weapon = new Equipment(weaponName,"Weapon",level);
-		armorSet = new Equipment("Cloth:Cloth Armor","ArmorSet",level);
-		attackRange = weapon.getRange();
 
 		maxEnthusiasm = 30;
 		enthusiasm = maxEnthusiasm;
@@ -83,11 +80,16 @@ public class Unit implements Serializable {
 		battleCry = "I will defeat you!";
 		
 		buffList = new ArrayList<Buff>();
+		
+		weapon = new Equipment(weaponName,"Weapon",level);
+		attackRange = weapon.getRange();
+
+		equipArmor(new Equipment(armorSetName,"ArmorSet",level));
 	}
 
 	public Unit(String unitName, String unitType, int allignmentInput, String weaponName, int maxEnthusiasmInput,
 			int toughnessInput, int maxFocusInput, int dilligenceInput, int strengthInput, int gloryInput,
-			int avoidanceInput, int speedInput) {
+			int avoidanceInput, int speedInput, String armorSetName) {
 		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
 		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + "Inactive\\" + unitName + "Inactive.png");
 		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + unitName + "Attack.gif");
@@ -97,9 +99,6 @@ public class Unit implements Serializable {
 		type = unitType;
 		moveRange = 6;
 		allignment = allignmentInput;
-		weapon = new Equipment(weaponName,"Weapon",level);
-		armorSet = new Equipment("Cloth:Cloth Armor","ArmorSet",level);
-		attackRange = weapon.getRange();
 
 		maxEnthusiasm = maxEnthusiasmInput;
 		enthusiasm = maxEnthusiasm;
@@ -116,6 +115,12 @@ public class Unit implements Serializable {
 		battleCry = "I will defeat you!";
 
 		buffList = new ArrayList<Buff>();
+		
+		weapon = new Equipment(weaponName,"Weapon",level);
+		attackRange = weapon.getRange();
+
+		equipArmor(new Equipment(armorSetName,"ArmorSet",level));
+
 	}
 
 	public void findImages() {
@@ -176,12 +181,24 @@ public class Unit implements Serializable {
 	}
 	
 	public void equipArmor(Equipment newArmor) {
+		if(armorSet != null)
+		{
+			deEquip(armorSet);
+		}
 		armorSet = newArmor;
-		
+		armorSet.getArmorEffects(this);
 	}
 	
 	public void equipAccessory(Equipment newAccessory) {
 		
+	}
+
+	public void deEquip(Equipment oldEquipment)
+	{
+		if(oldEquipment.type.equals("armorSet"))
+		{
+			oldEquipment.removeArmorEffects(this);
+		}
 	}
 
 	public void apply(Buff theBigCheese) {

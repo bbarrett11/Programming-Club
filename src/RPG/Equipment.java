@@ -141,30 +141,30 @@ public class Equipment implements Serializable {
 	/**	Armor:						Toughness		Other Effects
 	 * Heavy	Armor Sets	
 	 * 
-	 * Infernisium
-	 * Molten						40				Speed -3, 	Strength +20 
-	 * Berserkium					18							Strength +40(depends on state)
-	 * DragonScale					30				Speed -1, 	Strength + 10
-	 * Titanium						21							Strength +6
-	 * Gold							16							Strength +4
-	 * TurtleShell					11				Speed -2, 	Strength +7
-	 * Steel						8				Speed -1, 	Strength +5
-	 * Ivory						5							Strength +3
-	 * Wood							3				Speed -1, 	Strength +2
+	 * Infernisium					60				moveRange -2, 	Strength +5
+	 * Molten						40				moveRange -3, 	Strength +20 
+	 * Berserkium					18								Strength +40(depends on state)
+	 * DragonScale					30				moveRange -1, 	Strength + 10
+	 * Titanium						21								Strength +6
+	 * Gold							16								Strength +4
+	 * TurtleShell					11				moveRange -2, 	Strength +7
+	 * Steel						8				moveRange -1, 	Strength +5
+	 * Ivory						5								Strength +3
+	 * Wood							3				moveRange -1, 	Strength +2
 	 * 
 	 * 
 	 * Light Armor Sets	
 	 * 
-	 * Luxus						35				Speed +3	Diligence +6
-	 * Elementonite					30				Speed +2	Diligence +7
-	 * Mithril						28							Diligence +8
-	 * Luminefium					20							Diligence +6
-	 * Scalemail					15				Speed +2	Diligence +5
-	 * Silk							0				Speed +4, 	Diligence +7 
-	 * Chainmail					10							Diligence +5, 
-	 * Reinforced Leather			5							Diligence +3,
-	 * Leather						2							Diligence +2, 
-	 * Wool							1				Speed +1, 	Diligence +1, 
+	 * Luxus						35				moveRange +3	Diligence +6
+	 * Elementonite					30				moveRange +2	Diligence +7
+	 * Mithril						28								Diligence +8
+	 * Luminefium					20								Diligence +6
+	 * Scalemail					15				moveRange +2	Diligence +5
+	 * Silk							0				moveRange +4, 	Diligence +7 
+	 * Chainmail					10								Diligence +5 
+	 * Reinforced Leather			5								Diligence +3
+	 * Leather						2								Diligence +2 
+	 * Wool							1				moveRange +1, 	Diligence +1 
 	 * Cloth						0				Nothing
 	 * 
 	 * Adjectives:					Effect
@@ -187,7 +187,7 @@ public class Equipment implements Serializable {
 	 * Unstable
 	 * Stable
 	 * Transparent
-	 * 
+	 * Speedy
 	 */
 	
 	
@@ -313,13 +313,13 @@ public class Equipment implements Serializable {
 				range = new int[]{1};
 				accuracy = new int[]{80};
 				attack = 2 * Math.pow(levelMod, level-1);
-				stunChance = 100;
+				stunChance = 0;
 				bleedChance = new int[]{45,0};
 				bleedNumber = new int[]{(int)(3*(Math.pow(levelMod, level-1))),0};
 				bN^=1;
 				critChance = 10;
 				critRating = 100;
-				disarmChance = 100;	
+				disarmChance = 0;	
 				break;
 			case "Hammer":
 				range = new int[]{1};
@@ -574,6 +574,10 @@ public class Equipment implements Serializable {
 			switch(Attributes[h])
 			{
 			case "Infernisium":
+				toughnessAdd = 60;
+				speedAdd = -2;
+				strengthAdd = 5;
+				diligenceAdd = 0;
 				break;
 			case "Molten":
 				toughnessAdd = 40;
@@ -700,6 +704,22 @@ public class Equipment implements Serializable {
 			
 			}
 		}
+	}
+	
+	public void getArmorEffects(Unit u)
+	{
+		u.toughness += toughnessAdd;
+		u.speed += speedAdd;
+		u.strength += strengthAdd;
+		u.diligence += diligenceAdd;
+	}
+	
+	public void removeArmorEffects(Unit u)
+	{
+		u.toughness -= toughnessAdd;
+		u.speed -= speedAdd;
+		u.strength -= strengthAdd;
+		u.diligence -= diligenceAdd;
 	}
 
 	public int[] getRange() {

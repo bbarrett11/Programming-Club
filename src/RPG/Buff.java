@@ -36,10 +36,10 @@ public class Buff {
 				break;
 			case "Disarm":
 				makeDisarm(u);
-				System.out.println("Disarmed");
+				//System.out.println("Disarmed");
 				break;
 			case "Stun":
-				System.out.println("Stunned");
+				//System.out.println("Stunned");
 				makeStun(u);
 				break;
 			default:
@@ -69,7 +69,7 @@ public class Buff {
 	}
 	
 	public void makeStun(Unit u)
-	{
+	{//TODO
 		u.active = false;
 		//u.occupiedSpace.placeInactive(u);
 	}
@@ -78,9 +78,9 @@ public class Buff {
 	{
 		if(takenEquipment.name.equals("Fists"))
 		{
-		takenEquipment = u.weapon;
-		System.out.println(takenEquipment);
-		u.equipWeapon(new Equipment("Fists:Fists","Weapon",u.level));
+			takenEquipment = u.weapon;
+			System.out.println(takenEquipment);
+			u.equipWeapon(new Equipment("Fists:Fists","Weapon",u.level));
 		}
 	}
 	
