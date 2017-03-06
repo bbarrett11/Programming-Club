@@ -33,10 +33,11 @@ public class RPGApp extends JFrame {
 		RPGApp start = new RPGApp("Test");
 	}
 
-	Unit senorSavesTheDay = new Unit("SenorSavesTheDay", 0, "Sword: Senor's Sword");
-	Unit pizzaJew = new Unit("PizzaJew", 1, "Fists:Hands");
-	Unit elLady = new Unit("ElLady", 0, "Long-Bow: El Lady's Long-Bow");
-	Unit christmasNinja = new Unit("ChristmasNinja", 0, "Shuriken: Christmas Ninaja's Shuriken");
+	Unit senorSavesTheDay = new Unit("SenorSavesTheDay", 0, "Atomic Dagger: Senor's Sword","Cloth:Cloth Armor");
+	
+	Unit pizzaJew = new Unit("PizzaJew", 1, "Fists:Hands","Cloth:Cloth Armor");
+	Unit elLady = new Unit("ElLady", 0, "Long-Bow: El Lady's Long-Bow","Cloth:Cloth Armor");
+	Unit christmasNinja = new Unit("ChristmasNinja", 0, "Shuriken: Christmas Ninaja's Shuriken","Cloth:Cloth Armor");
 	SpringLayout layout;
 
 	public void myAttackWillRainDownFromTheSky() {
@@ -319,8 +320,6 @@ musicTimer.start();
 
 		repaint();
 	}
-
-	
 	
 	public Image resizeImage(String imageName, int width, int height) throws Exception{
 		int scaledWidth = width;
@@ -367,7 +366,8 @@ musicTimer.start();
 	JPanel characterPortrait;
 	JPanel characterStats;
 	JPanel characterItems;
-
+	JFrame buffInfo;
+	
 	private void buildCharacterDetailPanel(Tile space) {
 
 		characterDetailPanel.removeAll();
@@ -389,7 +389,7 @@ musicTimer.start();
 		JLabel focusLabel = new JLabel("Focus: " + space.occupyingUnit.focus + " / " + space.occupyingUnit.maxFocus);
 		JLabel toughnessLabel = new JLabel("Toughness: " + space.occupyingUnit.toughness);
 		JLabel speedLabel = new JLabel("Speed: " + space.occupyingUnit.speed);
-		JLabel dilligenceLabel = new JLabel("Dilligence: " + space.occupyingUnit.dilligence);
+		JLabel dilligenceLabel = new JLabel("Diligence: " + space.occupyingUnit.diligence);
 		characterStats.add(enthusiasmLabel);
 		characterStats.add(focusLabel);
 		characterStats.add(toughnessLabel);
@@ -397,13 +397,97 @@ musicTimer.start();
 		characterStats.add(dilligenceLabel);
 		characterStats.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
+		JPanel characterBuffPanel = new JPanel();
+		characterBuffPanel.setLayout(new GridLayout(5,5));
+		for(Buff b : space.occupyingUnit.buffList)
+		{
+			JPanel tempPanel = new JPanel();
+			JLabel tempLabel = new JLabel();
+			tempPanel.setName(b+"");
+			String color = "";
+			switch(b.name)
+			{
+			case "Bleed":
+				color = "Red";
+				break;
+			case "Disarm":
+				color = "Black";
+				break;
+			case "Stun":
+				color = "Green";
+				break;	
+			default:
+				break;
+			}
+			try {
+				tempLabel.setIcon(new ImageIcon(resizeImage("Art\\"+color+"Poison",30,40)));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			tempPanel.add(tempLabel);
+			try {
+				tempPanel.addMouseListener(new MouseListener()
+						{
+
+							public void mouseClicked(MouseEvent arg0) {
+							}
+
+							public void mouseEntered(MouseEvent e) {
+								buffInfo = new JFrame();
+								buffInfo.setSize(160, 17*(((JPanel)e.getSource()).getName().split("\n").length)+10);
+								buffInfo.setUndecorated(true);
+								JPanel buffInfoPanel = new JPanel();
+								String fin = "<html>";
+								for(String s : ((JPanel)e.getSource()).getName().split("\n"))
+								{
+									fin+=s+"</br><br>";
+								}
+								buffInfoPanel.add(new JLabel(fin + "</html>"));
+								
+								buffInfo.add(buffInfoPanel);
+															
+								buffInfo.setLocation(characterDetailPanel.getX(),
+										characterDetailPanel.getHeight()+characterDetailPanel.getY()-38);
+								buffInfo.setVisible(true);
+							}
+
+							public void mouseExited(MouseEvent arg0) {
+								buffInfo.dispose();
+								
+							}
+
+							public void mousePressed(MouseEvent arg0) {
+							}
+
+							public void mouseReleased(MouseEvent arg0) {
+							}
+					
+						});
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			characterBuffPanel.add(tempPanel);
+		}
+		JPanel characterBuffs = new JPanel();
+		characterBuffs.setLayout(new BorderLayout());
+		characterBuffs.add(new JLabel("Buffs:"),BorderLayout.NORTH);
+		characterBuffs.add(characterBuffPanel,BorderLayout.CENTER);
+		characterBuffs.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+		
+		JPanel characterBuffsStats = new JPanel();
+		characterBuffsStats.setLayout(new BorderLayout());
+		characterBuffsStats.add(characterStats,BorderLayout.NORTH);
+		characterBuffsStats.add(characterBuffs,BorderLayout.CENTER);
+
 		characterItems = new JPanel();
 		JLabel equippedWeapon = new JLabel("Equipped: " + space.occupyingUnit.weapon.name);
 		characterItems.add(equippedWeapon);
 		characterItems.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
 		characterDetailAll.add(characterPortrait, BorderLayout.NORTH);
-		characterDetailAll.add(characterStats, BorderLayout.CENTER);
+		characterDetailAll.add(characterBuffsStats, BorderLayout.CENTER);
 		characterDetailAll.add(characterItems, BorderLayout.SOUTH);
 
 		characterDetailPanel.add(characterDetailAll, BorderLayout.CENTER);
@@ -418,16 +502,26 @@ musicTimer.start();
 		if (playerNumber == 1) {
 			for (int n = 0; n < p1Units.size(); n++) {
 				p1Units.get(n).active = true;
+				for(int i = 0; i < p1Units.get(n).buffList.size();i++)
+					p1Units.get(n).buffList.get(i).execute(p1Units.get(n));
 			}
 			for (int n = 0; n < p2Units.size(); n++) {
 				p2Units.get(n).active = false;
+				for(int i = 0; i < p2Units.get(n).buffList.size();i++)
+					p2Units.get(n).buffList.get(i).checkEnd(p2Units.get(n));
+
 			}
 		} else if (playerNumber == 2) {
 			for (int n = 0; n < p2Units.size(); n++) {
 				p2Units.get(n).active = true;
+				for(int i = 0; i < p2Units.get(n).buffList.size();i++)
+					p2Units.get(n).buffList.get(i).execute(p2Units.get(n));
 			}
 			for (int n = 0; n < p1Units.size(); n++) {
 				p1Units.get(n).active = false;
+				for(int i = 0; i < p1Units.get(n).buffList.size();i++)
+					p1Units.get(n).buffList.get(i).checkEnd(p1Units.get(n));
+
 			}
 		}
 	
@@ -665,7 +759,6 @@ musicTimer.start();
 			player.play();
 			
 		} catch (FileNotFoundException | JavaLayerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -685,7 +778,6 @@ musicTimer.start();
 			player.play();
 			
 		} catch (FileNotFoundException | JavaLayerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -929,8 +1021,6 @@ musicTimer.start();
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		public void createAggressivePortraitWindow(Tile space, Unit character) {
@@ -957,7 +1047,7 @@ musicTimer.start();
 			actionList = new ArrayList<String>();
 
 			if (false) { // will be changed to check if talkable character
-							// adjacent
+							// adjacent//TODO
 				actionList.add("Talk");
 			}
 
@@ -1045,12 +1135,7 @@ musicTimer.start();
 					"Enthusiasm: " + attackingUnit.enthusiasm + " / " + attackingUnit.maxEnthusiasm);
 			JLabel attackingStateLabel = new JLabel();
 			if (attackingUnit.state == 1) {
-				attackingStateLabel.setText("State: ALL FIRED UP!"); // use html
-																		// to
-																		// spice
-																		// up
-																		// the
-																		// font
+				attackingStateLabel.setText("State: ALL FIRED UP!"); // use html to spice up the font
 			} else if (attackingUnit.state == 0) {
 				attackingStateLabel.setText("State: Discouraged");
 			} else {
@@ -1060,7 +1145,7 @@ musicTimer.start();
 			if (dmg < 0) {
 				dmg = 0;
 			}
-			JLabel attackingDamage = new JLabel("Damage: " + attackingUnit.weapon.getAttack());
+			JLabel attackingDamage = new JLabel("Damage: " + dmg);
 			int atkAccuracy = attackingUnit.weapon.getAccuracy(distance) - defendingUnit.avoidance
 					- defendingUnit.occupiedSpace.avoMod;
 			if (atkAccuracy > 100) {
@@ -1126,7 +1211,7 @@ musicTimer.start();
 			if (dmg < 0) {
 				dmg = 0;
 			}
-			JLabel defendingDamage = new JLabel("Damage: " + defendingUnit.weapon.getAttack());
+			JLabel defendingDamage = new JLabel("Damage: " + dmg);
 			int defAccuracy = defendingUnit.weapon.getAccuracy(distance) - attackingUnit.avoidance
 					- attackingUnit.occupiedSpace.avoMod;
 			if (defAccuracy > 100) {
@@ -1197,7 +1282,6 @@ musicTimer.start();
 			System.out.println(e.getPreciseWheelRotation());
 			
 		}
-
 	}
 
 	private class PlayerSpawnMouseListener implements MouseListener {
@@ -1368,6 +1452,7 @@ musicTimer.start();
 
 	}
 
+	InfoPanel infoPanel;
 	/**
 	 * Does something
 	 * 
@@ -1380,7 +1465,7 @@ musicTimer.start();
 			moveFromTile = moveToTile;
 			actionWindow.dispose();
 			actionMenuOpen = false;
-
+			checkEnd(movingUnit.allignment);
 		}
 		if (action.equals("Attack")) {
 			for (int range : movingUnit.attackRange) {
@@ -1390,7 +1475,19 @@ musicTimer.start();
 			moveFromTile = moveToTile;
 			actionWindow.dispose();
 			actionMenuOpen = false;
+			checkEnd(movingUnit.allignment);
 
+			// myAttackWillRainDownFromTheSky();
+			// checkAttack(moveToTile, movingUnit.allignment,
+			// movingUnit.attackRange);
+		}
+		if (action.equals("Info")) {
+			try {
+				infoPanel = new InfoPanel(movingUnit);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			// myAttackWillRainDownFromTheSky();
 			// checkAttack(moveToTile, movingUnit.allignment,
 			// movingUnit.attackRange);
@@ -1399,7 +1496,6 @@ musicTimer.start();
 			// myAttackWillRainDownFromTheSky();
 		}
 
-		checkEnd(movingUnit.allignment);
 	}
 
 	public void checkEnd(int team) {
@@ -1623,7 +1719,8 @@ musicTimer.start();
 				int damage = defendingUnit.receiveAttack(attackingUnit, defendingUnit.occupiedSpace);
 				String weaponEffects = attackingUnit.weapon.getAttackEffects();
 			boolean crit=false,stun=false,disarm=false,kill=false,bleed1=false,bleed2=false;
-				for(String s : weaponEffects.split(" "))
+			System.out.println(weaponEffects);	
+			for(String s : weaponEffects.split(" "))
 				{
 					switch(s)
 					{
@@ -1633,17 +1730,25 @@ musicTimer.start();
 						break;
 					case "Stun":
 						stun=true;
+						defendingUnit.buffList.add(new Buff("Stun",1));
+						combatText.add(new JLabel(attackingUnit.name + " stunned " +defendingUnit.name));
 						break;
 					case "Disarm":
 						disarm = true;
+						defendingUnit.buffList.add(new Buff("Disarm",1));
+						combatText.add(new JLabel(attackingUnit.name + " disarmed " +defendingUnit.name));
 						break;
 					case "Kill":
 						kill=true;
 						break;
 					case "Bleed1":
+						defendingUnit.buffList.add(new Buff("Bleed:"+attackingUnit.weapon.bleedNumber[0],3));
+						combatText.add(new JLabel(attackingUnit.name + " made " +defendingUnit.name + " bleed"));
 						bleed1=true;
 						break;
 					case "Bleed2":
+						defendingUnit.buffList.add(new Buff("Bleed:"+attackingUnit.weapon.bleedNumber[1],3));
+						combatText.add(new JLabel(attackingUnit.name + " made " +defendingUnit.name + " bleed"));
 						bleed2=true;
 						break;
 					}
