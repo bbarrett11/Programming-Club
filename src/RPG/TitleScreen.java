@@ -20,6 +20,10 @@ public class TitleScreen extends JFrame{
 	JButton settingsButton;
 	JButton exitGameButton;
 	
+	public static void main(String[] args) throws FileNotFoundException{
+		TitleScreen beginApp = new TitleScreen();
+	}
+	
 	public TitleScreen(){
 		setSize(500,500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -61,10 +65,59 @@ public class TitleScreen extends JFrame{
 		allEncompasingPanel.add(buttonPanel, BorderLayout.CENTER);
 	}
 	
-	public static void main(String[] args) throws FileNotFoundException{
-		TitleScreen beginApp = new TitleScreen();
+	final int PANELS_PER_SCROLL = 3;
+	final int SCROLLBAR_SIZE = 2; 
+	
+	public void buildContinuePanel(ArrayList<File> saveFiles){
+		saveSelectionPanels = new JPanel[saveFiles.size()];
+		
+		for(int n = 0;n<saveSelectionPanels.length;n++){
+			saveSelectionPanels[n] = new JPanel();
+			saveSelectionPanels[n].setLayout(new BoxLayout(saveSelectionPanels[n], BoxLayout.Y_AXIS));
+			saveSelectionPanels[n].setBackground(Color.GRAY);
+				//change paint component to whatever background we want
+			saveSelectionPanels[n].add(new JLabel(saveFiles.get(n).getName()));
+			try {
+				File currentMissionReader = new File(saveFiles.get(n).getPath()+ "\\AvailableLevels.txt");
+				Scanner fileReader = new Scanner(currentMissionReader);
+				saveSelectionPanels[n].add(new JLabel("Level: " + fileReader.next()));
+				fileReader.close();
+				
+			} 
+			catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		continueGamePanel = new JPanel();
+			//change paintComponent() to whatever we want background to be
+		continueGamePanel.setLayout(new BorderLayout());
+		savePanels = new JPanel();
+		savePanels.setLayout(new BoxLayout(savePanels, BoxLayout.Y_AXIS));
+		
+		for(int n = 0;n<saveSelectionPanels.length && n<PANELS_PER_SCROLL;n++){
+			savePanels.add(saveSelectionPanels[n]);
+		}
+		continueGamePanel.add(savePanels, BorderLayout.CENTER);
+		
+		if(saveSelectionPanels.length>PANELS_PER_SCROLL){
+			saveSelectScrollbar = new Scrollbar(Scrollbar.VERTICAL, 0, SCROLLBAR_SIZE, 0, SCROLLBAR_SIZE
+					+ saveSelectionPanels.length - PANELS_PER_SCROLL);
+			
+			saveSelectScrollbar.addAdjustmentListener(new ContinueScrollAdjustmentListener());
+			continueGamePanel.add(saveSelectScrollbar, BorderLayout.EAST);
+		}
+		continueGamePanel.add(returnButton, BorderLayout.SOUTH);
+		
 	}
 	
+	JPanel[] saveSelectionPanels;
+	JPanel continueGamePanel;
+	JPanel savePanels;
+	Scrollbar saveSelectScrollbar;
+
 	
 	JPanel createFilePanel;
 	JButton returnButton;
@@ -84,9 +137,9 @@ public class TitleScreen extends JFrame{
 					//paintComponent set to whatever background we want
 				};
 				createFilePanel.setLayout(new BoxLayout(createFilePanel, BoxLayout.Y_AXIS));
-				JLabel fileNamePrompt = new JLabel("File Name:");
 				createFileButton = new JButton("Create File");
 				createFileButton.addActionListener(new MenuButtonListener());
+				JLabel fileNamePrompt = new JLabel("File Name:");
 				
 				createFilePanel.add(fileNamePrompt);
 				createFilePanel.add(fileNameInput);
@@ -101,20 +154,30 @@ public class TitleScreen extends JFrame{
 			else if(text.equals("Continue")){
 				File savesFolder = new File("Saves");
 				File[] listOfFiles = savesFolder.listFiles();
+				ArrayList<File> saves = new ArrayList<File>();
 
 			    for (int i = 0; i < listOfFiles.length; i++) {
 			      if (listOfFiles[i].isFile()) {
 			        System.out.println("File " + listOfFiles[i].getName());
 			      } else if (listOfFiles[i].isDirectory()) {
 			        System.out.println("Directory " + listOfFiles[i].getName());
+			        saves.add(listOfFiles[i]);
 			      }
 			    }
+			    
+			    buildContinuePanel(saves);
+			    setVisible(false);
+				remove(allEncompasingPanel);
+				add(continueGamePanel);
+				setVisible(true);
+			    
+			    
 			}
 			else if(text.equals("Settings")){
 				
 			}
 			else if(text.equals("Exit")){
-				
+				System.exit(0);
 			}
 			else if(text.equals("Return")){
 				setVisible(false);
@@ -159,6 +222,18 @@ public class TitleScreen extends JFrame{
 			}
 		}
 	
+		
+	}
+
+	private class ContinueScrollAdjustmentListener implements AdjustmentListener{
+
+		public void adjustmentValueChanged(AdjustmentEvent e) {
+			savePanels.removeAll();
+			for(int n = 0;n<PANELS_PER_SCROLL;n++){
+				savePanels.add(saveSelectionPanels[e.getValue()+n]);
+			}
+			savePanels.updateUI();
+		}
 		
 	}
 	
