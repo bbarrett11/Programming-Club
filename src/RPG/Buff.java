@@ -70,8 +70,10 @@ public class Buff {
 	
 	public void makeStun(Unit u)
 	{//TODO
+		Tile temp = u.occupiedSpace;
 		u.active = false;
-		//u.occupiedSpace.placeInactive(u);
+		temp.remove(u);
+		temp.placeInactive(u);
 	}
 	
 	public void makeDisarm(Unit u)
