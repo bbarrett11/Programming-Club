@@ -2,7 +2,12 @@ package RPG;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Tile extends JPanel {
@@ -85,10 +90,11 @@ public class Tile extends JPanel {
 	public void updateIcon(boolean down) {
 		if (occupied&&occupyingUnit.active) {
 			remove(character);
+			occupyingUnit.calculateState();
 				character = new JLabel(occupyingUnit.graphic);
 				if(!down)
 				{
-					layout.putConstraint(SpringLayout.NORTH, character, 7, SpringLayout.NORTH, this);
+					layout.putConstraint(SpringLayout.NORTH, character, (occupyingUnit.state)*2+1, SpringLayout.NORTH, this);
 					setLayout(layout);
 				}
 				else
@@ -188,6 +194,24 @@ public class Tile extends JPanel {
 		if (occupied) {
 			drawHealthBar(g);
 		}
+	}
+	
+	private Image resizeImage(String imageName, int width, int height) throws Exception{
+		int scaledWidth = width;
+		int scaledHeight = height;
+		//
+		File inputFile = new File(imageName + ".png");
+		BufferedImage inputImage = ImageIO.read(inputFile);
+		
+		BufferedImage outputImage = new BufferedImage(scaledWidth, scaledHeight, inputImage.getType());
+		
+		Graphics2D g2d = outputImage.createGraphics();
+        g2d.drawImage(inputImage, 0, 0, scaledWidth, scaledHeight, null);
+        g2d.dispose();
+        
+        //ImageIO.write(outputImage, "png", new File(imageName + "Resize.png"));
+        
+		return outputImage;
 	}
 
 }

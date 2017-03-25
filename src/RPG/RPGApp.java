@@ -379,12 +379,14 @@ musicTimer.start();
 
 		characterPortrait = new JPanel();	
 		
-		System.out.println(space.occupyingUnit.portrait.toString());
+		//System.out.println(space.occupyingUnit.portrait.toString());
 		boolean hasPortrait = true;
 		try
 		{ JLabel portraitImage = new JLabel(new ImageIcon(resizeImage(space.occupyingUnit.portrait.toString().replaceAll(".png","").replaceAll("portrait", "\\portrait/"),100,100)));}
 		catch(Exception e)
-		{	hasPortrait = false;}
+		{	hasPortrait = false;
+		System.out.println(space.occupyingUnit.portrait.toString());
+		}
 		if(hasPortrait)
 		{
 		JLabel portraitImage = new JLabel(new ImageIcon(resizeImage(space.occupyingUnit.portrait.toString().replaceAll(".png","").replaceAll("portrait", "\\portrait/"),100,100)));

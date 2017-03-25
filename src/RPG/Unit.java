@@ -43,9 +43,6 @@ public class Unit implements Serializable {
 	public ArrayList<Buff> buffList;
 
 	public Unit(String unitName, int allignmentInput) {
-		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
-		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + unitName + "Inactive.png");
-		portrait = new ImageIcon(CHARACTER_ART_PATH + unitName + "Portrait.png");
 		placed = false;
 		name = unitName;
 		moveRange = 6;
@@ -53,18 +50,18 @@ public class Unit implements Serializable {
 		weapon = new Equipment("Fists","Weapon",level);
 		armorSet = new Equipment("Cloth:Cloth Armor","ArmorSet",level);
 		allignment = allignmentInput;
+		findImages();
+		
 	}
 
 	public Unit(String unitName, int allignmentInput, String weaponName,String armorSetName) {
-		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
-		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + unitName + "Inactive.png");
-		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + unitName + "Attack.gif");
-		portrait = new ImageIcon(CHARACTER_ART_PATH + unitName + "Portrait.png");
+		type = "Hero";
 		placed = false;
 		name = unitName;
 		moveRange = 6;
 		allignment = allignmentInput;
-
+		findImages();
+		
 		maxEnthusiasm = 30;
 		enthusiasm = maxEnthusiasm;
 		state = 1;
@@ -90,15 +87,12 @@ public class Unit implements Serializable {
 	public Unit(String unitName, String unitType, int allignmentInput, String weaponName, int maxEnthusiasmInput,
 			int toughnessInput, int maxFocusInput, int dilligenceInput, int strengthInput, int gloryInput,
 			int avoidanceInput, int speedInput, String armorSetName) {
-		graphic = new ImageIcon(CHARACTER_ART_PATH + unitName + ".png");
-		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + "Inactive\\" + unitName + "Inactive.png");
-		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + unitName + "Attack.gif");
-		portrait = new ImageIcon(CHARACTER_ART_PATH + unitName + "Portrait.png");
 		placed = false;
 		name = unitName;
 		type = unitType;
 		moveRange = 6;
 		allignment = allignmentInput;
+		findImages();
 
 		maxEnthusiasm = maxEnthusiasmInput;
 		enthusiasm = maxEnthusiasm;
@@ -125,9 +119,9 @@ public class Unit implements Serializable {
 
 	public void findImages() {
 		graphic = new ImageIcon(CHARACTER_ART_PATH + type + "\\" + name + ".png");
-		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + "Inactive\\" + name + "Inactive.png");
+		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + "inactive\\" + name + "Inactive.png");
 		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + name + "Attack.gif");
-		portrait = new ImageIcon(CHARACTER_ART_PATH + "\\portrait"+name + "Portrait.png");
+		portrait = new ImageIcon(CHARACTER_ART_PATH + "portrait\\"+name + "Portrait.png");
 	}
 
 	public void setPlaced(boolean input) {
