@@ -40,6 +40,9 @@ public class TitleScreen extends JFrame{
 		};
 		allEncompasingPanel.setLayout(new BorderLayout());
 		titleLabel = new JLabel(GAME_NAME);
+		titleLabel.setHorizontalAlignment(JLabel.CENTER);
+		titleLabel.setVerticalAlignment(JLabel.CENTER);
+		titleLabel.setFont(new Font(titleLabel.getFont().getName(),Font.ITALIC,50));
 		allEncompasingPanel.add(titleLabel, BorderLayout.NORTH);
 		
 		buttonPanel = new JPanel();
@@ -48,19 +51,33 @@ public class TitleScreen extends JFrame{
 		
 		newGameButton = new JButton("New Game");
 		newGameButton.addActionListener(new MenuButtonListener());
+		newGameButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		newGameButton.setAlignmentY(JLabel.CENTER_ALIGNMENT);
 		buttonPanel.add(newGameButton);
 		
 		continueGameButton = new JButton("Continue");
 		continueGameButton.addActionListener(new MenuButtonListener());
+		continueGameButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		continueGameButton.setAlignmentY(JLabel.CENTER_ALIGNMENT);
 		buttonPanel.add(continueGameButton);
 		
 		settingsButton = new JButton("Settings");
 		settingsButton.addActionListener(new MenuButtonListener());
+		settingsButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		settingsButton.setAlignmentY(JLabel.CENTER_ALIGNMENT);
 		buttonPanel.add(settingsButton);
 		
 		exitGameButton = new JButton("Exit");
 		exitGameButton.addActionListener(new MenuButtonListener());
+		exitGameButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		exitGameButton.setAlignmentY(JLabel.CENTER_ALIGNMENT);
 		buttonPanel.add(exitGameButton);
+		
+		//buttonPanel.setAlignmentX(JLabel.CENTER);
+		//buttonPanel.setAlignmentY(JLabel.CENTER);
+		
+		//allEncompasingPanel.setAlignmentX(JLabel.CENTER);
+		//allEncompasingPanel.setAlignmentY(JLabel.CENTER);
 		
 		allEncompasingPanel.add(buttonPanel, BorderLayout.CENTER);
 	}
