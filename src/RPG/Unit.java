@@ -127,7 +127,7 @@ public class Unit implements Serializable {
 		graphic = new ImageIcon(CHARACTER_ART_PATH + type + "\\" + name + ".png");
 		inactiveGraphic = new ImageIcon(CHARACTER_ART_PATH + "Inactive\\" + name + "Inactive.png");
 		attackAnimation = new ImageIcon(CHARACTER_ART_PATH + name + "Attack.gif");
-		portrait = new ImageIcon(CHARACTER_ART_PATH + name + "Portrait.png");
+		portrait = new ImageIcon(CHARACTER_ART_PATH + "\\portrait"+name + "Portrait.png");
 	}
 
 	public void setPlaced(boolean input) {

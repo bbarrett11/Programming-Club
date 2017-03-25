@@ -566,7 +566,6 @@ public class Equipment implements Serializable {
 		}
 	}
 	
-	
 	public void setUpArmor(String[] Attributes)
 	{
 		for(int h = Attributes.length-1; h >=0;h--)
@@ -725,8 +724,7 @@ public class Equipment implements Serializable {
 	public int[] getRange() {
 		return range;
 	}
-	
-	
+		
 	public int getAttack()
 	{
 		Random randGenerator = new Random();
@@ -737,7 +735,6 @@ public class Equipment implements Serializable {
 		return damage;
 	}
 	
-	
 	public int getAccuracy(int n)
 	{
 		for(int i = 0; i < range.length; i++)
@@ -746,7 +743,6 @@ public class Equipment implements Serializable {
 		return 0;
 	}
 
-	
 	public String getAttackEffects()
 	{
 		String s = "";
@@ -767,7 +763,6 @@ public class Equipment implements Serializable {
 
 		return s.trim();
 	}
-	
 	
 	public String toString()
 	{

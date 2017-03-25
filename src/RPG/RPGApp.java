@@ -334,7 +334,7 @@ musicTimer.start();
         g2d.drawImage(inputImage, 0, 0, scaledWidth, scaledHeight, null);
         g2d.dispose();
         
-        ImageIO.write(outputImage, "png", new File(imageName + "Resize.png"));
+       // ImageIO.write(outputImage, "png", new File(imageName + "Resize.png"));
         
 		return outputImage;
 	}
@@ -368,7 +368,7 @@ musicTimer.start();
 	JPanel characterItems;
 	JFrame buffInfo;
 	
-	private void buildCharacterDetailPanel(Tile space) {
+	private void buildCharacterDetailPanel(Tile space) throws Exception {
 
 		characterDetailPanel.removeAll();
 		JLabel portraitName = new JLabel(space.occupyingUnit.name);
@@ -377,11 +377,21 @@ musicTimer.start();
 		characterDetailAll = new JPanel();
 		characterDetailAll.setLayout(new BorderLayout());
 
-		characterPortrait = new JPanel();
-		JLabel portraitImage = new JLabel(space.occupyingUnit.portrait);
+		characterPortrait = new JPanel();	
+		
+		System.out.println(space.occupyingUnit.portrait.toString());
+		boolean hasPortrait = true;
+		try
+		{ JLabel portraitImage = new JLabel(new ImageIcon(resizeImage(space.occupyingUnit.portrait.toString().replaceAll(".png","").replaceAll("portrait", "\\portrait/"),100,100)));}
+		catch(Exception e)
+		{	hasPortrait = false;}
+		if(hasPortrait)
+		{
+		JLabel portraitImage = new JLabel(new ImageIcon(resizeImage(space.occupyingUnit.portrait.toString().replaceAll(".png","").replaceAll("portrait", "\\portrait/"),100,100)));
 		characterPortrait.add(portraitImage);
+		}
 		characterPortrait.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-
+		
 		characterStats = new JPanel();
 		characterStats.setLayout(new BoxLayout(characterStats, BoxLayout.Y_AXIS));
 		JLabel enthusiasmLabel = new JLabel(
@@ -398,7 +408,7 @@ musicTimer.start();
 		characterStats.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
 		JPanel characterBuffPanel = new JPanel();
-		characterBuffPanel.setLayout(new GridLayout(5,5));
+		characterBuffPanel.setLayout(new FlowLayout());
 		for(Buff b : space.occupyingUnit.buffList)
 		{
 			JPanel tempPanel = new JPanel();
@@ -447,7 +457,7 @@ musicTimer.start();
 								
 								buffInfo.add(buffInfoPanel);
 															
-								buffInfo.setLocation(characterDetailPanel.getX(),
+								buffInfo.setLocation(characterDetailPanel.getX()+10,
 										characterDetailPanel.getHeight()+characterDetailPanel.getY()-38);
 								buffInfo.setVisible(true);
 							}
@@ -730,6 +740,7 @@ musicTimer.start();
 
 	String musicPath = "";
 	Timer musicTimer;
+	
 	/**
 	 * ActionListener that listens to see if the musicPath has changed to something
 	 */
@@ -964,7 +975,10 @@ musicTimer.start();
 			animateTile = temp;
 			
 			if (temp.occupied && !actionMenuOpen && !attackFound) {
-				buildCharacterDetailPanel(temp);
+				try {
+					buildCharacterDetailPanel(temp);
+				} catch (Exception e1) {
+				}
 				// createAggressivePortraitWindow(temp, temp.occupyingUnit);
 			}
 			// System.out.println("x: " +temp.xPos + " y: " + temp.yPos);
@@ -1327,7 +1341,10 @@ musicTimer.start();
 		public void mouseEntered(MouseEvent e) {
 			Tile temp = (Tile) e.getSource();
 			if (temp.occupied && !actionMenuOpen && !attackFound) {
-				buildCharacterDetailPanel(temp);
+				try {
+					buildCharacterDetailPanel(temp);
+				} catch (Exception e1) {
+				}
 				// createAggressivePortraitWindow(temp, temp.occupyingUnit);
 			}
 			// System.out.println("x: " +temp.xPos + " y: " + temp.yPos);
