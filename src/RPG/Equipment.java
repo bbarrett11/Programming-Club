@@ -748,6 +748,7 @@ public class Equipment implements Serializable {
 		String s = "";
 		Random randGenerator = new Random(System.currentTimeMillis());
 		randGenerator.nextInt(100);
+		System.out.println(randGenerator.nextInt(100));
 		if(randGenerator.nextInt(100) < stunChance)
 			s+="Stun ";
 		if(randGenerator.nextInt(100) < critChance)
@@ -760,6 +761,7 @@ public class Equipment implements Serializable {
 			s+="Bleed1 ";
 		if(randGenerator.nextInt(100) < bleedChance[1])
 			s+="Bleed2 ";
+		System.out.println(randGenerator.nextInt(100));
 
 		return s.trim();
 	}

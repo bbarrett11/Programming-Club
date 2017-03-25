@@ -1,6 +1,7 @@
 package RPG;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -70,13 +71,13 @@ public class InfoPanel extends JFrame{
 		JPanel weapon = new JPanel();
 		weapon.setBorder(BorderFactory.createEtchedBorder());
 		weapon.setSize(75, 75);
-		weapon.add(new JLabel(new ImageIcon(resizeImage("Art\\EmptyWeapon",75,75))));
+		weapon.add(new JLabel(new ImageIcon(resizeImage("Art\\equipment\\EmptyWeapon",75,75))));
 		weapon.addMouseListener(mouseOverListener);
 		weapon.setName(describedUnit.weapon.toString() + "");
 		
 		//Armor
 		JPanel armor = new JPanel();
-		armor.add(new JLabel(new ImageIcon(resizeImage("Art\\EmptyArmor",75,75))));
+		armor.add(new JLabel(new ImageIcon(resizeImage("Art\\equipment\\EmptyArmor",75,75))));
 		armor.setBorder(BorderFactory.createEtchedBorder());
 		armor.setSize(75,75);
 		armor.addMouseListener(mouseOverListener);
@@ -86,7 +87,7 @@ public class InfoPanel extends JFrame{
 		JPanel accessory = new JPanel();
 		accessory.setBorder(BorderFactory.createEtchedBorder());
 		accessory.setSize(75,75);
-		accessory.add(new JLabel(new ImageIcon(resizeImage("Art\\EmptyAccessory",75,75))));
+		accessory.add(new JLabel(new ImageIcon(resizeImage("Art\\equipment\\EmptyAccessory",75,75))));
 		accessory.addMouseListener(mouseOverListener);
 		accessory.setName(describedUnit.weapon.toString() + "");
 
@@ -162,7 +163,7 @@ public class InfoPanel extends JFrame{
 		Effects.setBorder(BorderFactory.createEtchedBorder());
 		Effects.add(new JLabel("Buffs:"),BorderLayout.NORTH);
 		JPanel buffPanel = new JPanel();
-		buffPanel.setLayout(new GridLayout(5,5));
+		buffPanel.setLayout(new FlowLayout());
 		for(Buff b : describedUnit.buffList)
 		{
 			JPanel tempPanel = new JPanel();
@@ -183,7 +184,7 @@ public class InfoPanel extends JFrame{
 			default:
 				break;
 			}
-			tempLabel.setIcon(new ImageIcon(resizeImage("Art\\"+color+"Poison",30,40)));
+			tempLabel.setIcon(new ImageIcon(resizeImage("Art\\buff\\"+color+"Poison",30,40)));
 			tempPanel.add(tempLabel);
 			tempPanel.addMouseListener(mouseOverListener);
 			buffPanel.add(tempPanel);

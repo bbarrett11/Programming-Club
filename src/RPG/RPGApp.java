@@ -432,7 +432,7 @@ musicTimer.start();
 				break;
 			}
 			try {
-				tempLabel.setIcon(new ImageIcon(resizeImage("Art\\"+color+"Poison",30,40)));
+				tempLabel.setIcon(new ImageIcon(resizeImage("Art\\buff\\"+color+"Poison",30,40)));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -837,7 +837,12 @@ musicTimer.start();
 			}
 			if (attackFound) {
 				if (temp.colorTile.canAttack) {
-					createAttackPreview(moveToTile.occupyingUnit, temp.occupyingUnit);
+					try {
+						createAttackPreview(moveToTile.occupyingUnit, temp.occupyingUnit);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			} else if (!moving) {
 				if (temp.occupied && temp.occupyingUnit.active) {
@@ -980,11 +985,11 @@ musicTimer.start();
 				try {
 					buildCharacterDetailPanel(temp);
 				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
 				// createAggressivePortraitWindow(temp, temp.occupyingUnit);
 			}
-			// System.out.println("x: " +temp.xPos + " y: " + temp.yPos);
-			// System.out.println("entered: ");
+
 			if (startY + currentSize - 1 == temp.xPos)
 				moveSouth = true;
 			else if (startY == temp.xPos)
@@ -1039,7 +1044,7 @@ musicTimer.start();
 		public void mouseReleased(MouseEvent e) {
 		}
 
-		public void createAggressivePortraitWindow(Tile space, Unit character) {
+		public void createAggressivePortraitWindow(Tile space, Unit character) throws Exception {
 			portraitWindow = new JFrame();
 			portraitWindow.setSize(146, 78);
 			portraitWindow.setUndecorated(true);
@@ -1113,7 +1118,7 @@ musicTimer.start();
 			actionWindow.setVisible(true);
 		}
 
-		public void createAttackPreview(Unit attackingUnit, Unit defendingUnit) {
+		public void createAttackPreview(Unit attackingUnit, Unit defendingUnit) throws Exception {
 			int distance = Math.abs(attackingUnit.occupiedSpace.xPos-defendingUnit.occupiedSpace.xPos)+
 					Math.abs(attackingUnit.occupiedSpace.yPos-defendingUnit.occupiedSpace.yPos);
 			
@@ -1139,7 +1144,7 @@ musicTimer.start();
 			attackingPanel.setBorder(BorderFactory.createTitledBorder(attackingUnit.name));
 
 			JPanel attackingPortraitPanel = new JPanel();
-			JLabel attackingPortrait = new JLabel(attackingUnit.portrait);
+			JLabel attackingPortrait = new JLabel(new ImageIcon(resizeImage(attackingUnit.portrait.toString().replaceAll(".png","").replaceAll("portrait", "\\portrait/"),100,100)));
 			attackingPortraitPanel.add(attackingPortrait);
 			attackingPortraitPanel.setBackground(attackingBackground);
 			attackingPortraitPanel.setBorder(BorderFactory.createEtchedBorder());
@@ -1200,7 +1205,7 @@ musicTimer.start();
 			defendingPanel.setBorder(BorderFactory.createTitledBorder(defendingUnit.name));
 
 			JPanel defendingPortraitPanel = new JPanel();
-			JLabel defendingPortrait = new JLabel(defendingUnit.portrait);
+			JLabel defendingPortrait = new JLabel(new ImageIcon(resizeImage(defendingUnit.portrait.toString().replaceAll(".png","").replaceAll("portrait", "\\portrait/"),100,100)));
 			defendingPortraitPanel.add(defendingPortrait);
 			defendingPortraitPanel.setBackground(defendingBackground);
 			defendingPortraitPanel.setBorder(BorderFactory.createEtchedBorder());
