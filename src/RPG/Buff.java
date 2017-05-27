@@ -51,14 +51,17 @@ public class Buff {
 	 * Method that is executed at the beginning of the other team's turn to see if the buff expires
 	 * @param u The unit effected by the buff
 	 */
-	public void checkEnd(Unit u)
+	public int checkEnd(Unit u)
 	{
 		turnLength--;
 		if(turnLength == 0)
 		{
 			giveBack(u);
 			u.buffList.remove(this);
+			return 1;
 		}
+		System.out.println(name + " checked " + turnLength);
+		return 0;
 	}
 	
 	public void makeBleed(Unit u)
@@ -80,7 +83,7 @@ public class Buff {
 	{
 		if(takenEquipment.name.equals("Fists"))
 		{
-			takenEquipment = u.weapon;
+			takenEquipment = new Equipment(u.weapon.fullName,u.weapon.type,u.weapon.level);
 			System.out.println(takenEquipment);
 			u.equipWeapon(new Equipment("Fists:Fists","Weapon",u.level));
 		}

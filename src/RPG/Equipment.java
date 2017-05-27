@@ -50,6 +50,7 @@ public class Equipment implements Serializable {
 			"Weak",};
 	
 	public String name;
+	public String fullName;
 	public String type;
 	public int level;
 	public double levelMod = 1.25;
@@ -200,6 +201,7 @@ public class Equipment implements Serializable {
 	
 	
 	public Equipment(String nameInput, String type,int level) {
+		this.fullName = nameInput;
 		this.level = level;
 		this.type = type;
 		name = nameInput.split(":")[1];
@@ -235,7 +237,6 @@ public class Equipment implements Serializable {
 		*/
 	}
 
-	
 	public void setUpWeapon(String[] Attributes)
 	{
 		for(int h = Attributes.length-1; h >=0;h--)
@@ -313,13 +314,13 @@ public class Equipment implements Serializable {
 				range = new int[]{1};
 				accuracy = new int[]{80};
 				attack = 2 * Math.pow(levelMod, level-1);
-				stunChance = 0;
+				stunChance = 100;
 				bleedChance = new int[]{45,0};
 				bleedNumber = new int[]{(int)(3*(Math.pow(levelMod, level-1))),0};
 				bN^=1;
 				critChance = 10;
 				critRating = 100;
-				disarmChance = 0;	
+				disarmChance = 100;	
 				break;
 			case "Hammer":
 				range = new int[]{1};

@@ -520,7 +520,7 @@ musicTimer.start();
 			for (int n = 0; n < p2Units.size(); n++) {
 				p2Units.get(n).active = false;
 				for(int i = 0; i < p2Units.get(n).buffList.size();i++)
-					p2Units.get(n).buffList.get(i).checkEnd(p2Units.get(n));
+					i-=p2Units.get(n).buffList.get(i).checkEnd(p2Units.get(n));
 
 			}
 		} else if (playerNumber == 2) {
@@ -532,7 +532,7 @@ musicTimer.start();
 			for (int n = 0; n < p1Units.size(); n++) {
 				p1Units.get(n).active = false;
 				for(int i = 0; i < p1Units.get(n).buffList.size();i++)
-					p1Units.get(n).buffList.get(i).checkEnd(p1Units.get(n));
+					i-=p1Units.get(n).buffList.get(i).checkEnd(p1Units.get(n));
 
 			}
 		}
@@ -1759,7 +1759,7 @@ musicTimer.start();
 						break;
 					case "Disarm":
 						disarm = true;
-						defendingUnit.buffList.add(new Buff("Disarm",1));
+						defendingUnit.buffList.add(new Buff("Disarm",2));
 						combatText.add(new JLabel(attackingUnit.name + " disarmed " +defendingUnit.name));
 						break;
 					case "Kill":
